@@ -1,0 +1,41 @@
+# Pending WhatsApp alerts, every hour from 05:20 to 20:20 Lima. Replaces the n8n
+# workflow "Notificar matches pendientes". See docs/JOBS.md.
+name: Avisos por WhatsApp
+
+on:
+  schedule:
+    - cron: "20 10-23 * * *" # 05:20 to 18:20 in Lima
+    - cron: "20 0,1 * * *" # 19:20 and 20:20 in Lima
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Solo listar lo que se enviaria, sin enviar"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: whatsapp-alerts
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    name: Send pending alerts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      WHATSAPP_ACCESS_TOKEN: ${{ secrets.WHATSAPP_ACCESS_TOKEN }}
+      WHATSAPP_PHONE_NUMBER_ID: ${{ secrets.WHATSAPP_PHONE_NUMBER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --filter "@licitaciones/jobs..."
+      - run: pnpm jobs:notify ${{ inputs.dry_run && '--dry-run' || '' }}

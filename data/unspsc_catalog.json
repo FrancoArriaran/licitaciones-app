@@ -1,0 +1,1947 @@
+[
+  {
+    "family": "7214",
+    "description": "Servicios de mantenimiento de pistas y carreteras",
+    "count": 6439
+  },
+  {
+    "family": "1510",
+    "description": "Diesel",
+    "count": 4372
+  },
+  {
+    "family": "8110",
+    "description": "Ingeniería arquitectónica",
+    "count": 4083
+  },
+  {
+    "family": "7212",
+    "description": "Servicios de construcción de escuelas",
+    "count": 2639
+  },
+  {
+    "family": "3011",
+    "description": "Cemento",
+    "count": 2597
+  },
+  {
+    "family": "8013",
+    "description": "Alquiler de instalaciones comerciales o industriales",
+    "count": 2457
+  },
+  {
+    "family": "7215",
+    "description": "Servicios de construcción de campos deportivos interiores",
+    "count": 1834
+  },
+  {
+    "family": "9210",
+    "description": "Servicios de vigilancia",
+    "count": 1537
+  },
+  {
+    "family": "8010",
+    "description": "Administración o planificación de proyectos",
+    "count": 1529
+  },
+  {
+    "family": "5013",
+    "description": "Leche o productos de mantequilla estables sin refrigerar",
+    "count": 1366
+  },
+  {
+    "family": "9111",
+    "description": "Servicios de cocina o preparación de comidas",
+    "count": 1143
+  },
+  {
+    "family": "7710",
+    "description": "Servicios de control de calidad ambiental",
+    "count": 1135
+  },
+  {
+    "family": "8312",
+    "description": "Servicios relacionados con Internet",
+    "count": 876
+  },
+  {
+    "family": "7811",
+    "description": "Alquiler de vehículos",
+    "count": 760
+  },
+  {
+    "family": "7611",
+    "description": "Servicios de limpieza de edificios",
+    "count": 602
+  },
+  {
+    "family": "5022",
+    "description": "Granos de cereal",
+    "count": 498
+  },
+  {
+    "family": "7810",
+    "description": "Servicios de transporte regional o nacional en camión",
+    "count": 456
+  },
+  {
+    "family": "5019",
+    "description": "Papas fritas en hojuelas y al hilo, mix de bocaditos o galletas saladas",
+    "count": 414
+  },
+  {
+    "family": "2510",
+    "description": "Camiones ligeros o vehículos de utilidad deportiva",
+    "count": 349
+  },
+  {
+    "family": "3012",
+    "description": "Asfalto",
+    "count": 321
+  },
+  {
+    "family": "8014",
+    "description": "Gestión de eventos",
+    "count": 312
+  },
+  {
+    "family": "1111",
+    "description": "Grava",
+    "count": 309
+  },
+  {
+    "family": "3010",
+    "description": "Varillas de hierro",
+    "count": 309
+  },
+  {
+    "family": "8111",
+    "description": "Servicio de licencias para software de computadoras",
+    "count": 283
+  },
+  {
+    "family": "9315",
+    "description": "Gestión de inversiones públicas o presupuestarias",
+    "count": 279
+  },
+  {
+    "family": "8311",
+    "description": "Servicios de telefonía móvil",
+    "count": 274
+  },
+  {
+    "family": "7711",
+    "description": "Servicios de descontaminación ambiental",
+    "count": 270
+  },
+  {
+    "family": "8210",
+    "description": "Publicidad en Internet",
+    "count": 265
+  },
+  {
+    "family": "8212",
+    "description": "Impresión tipográfica o serigrafía",
+    "count": 259
+  },
+  {
+    "family": "8516",
+    "description": "Mantenimiento o reparación de bienes de equipo médico",
+    "count": 252
+  },
+  {
+    "family": "7818",
+    "description": "Reparación y mantenimiento de camión ligero automotriz",
+    "count": 251
+  },
+  {
+    "family": "7315",
+    "description": "Servicio de reparación y mantenimiento de equipo eléctrico",
+    "count": 232
+  },
+  {
+    "family": "8114",
+    "description": "Servicio de inspección de instalaciones sanitarias o alcantarillado",
+    "count": 224
+  },
+  {
+    "family": "5012",
+    "description": "Pescado estable sin refrigerar",
+    "count": 221
+  },
+  {
+    "family": "4111",
+    "description": "Accesorios o suministros de analizadores de banco de sangre",
+    "count": 216
+  },
+  {
+    "family": "7612",
+    "description": "Disposición final para desechos peligrosos",
+    "count": 196
+  },
+  {
+    "family": "1511",
+    "description": "Gas de petróleo licuefactado",
+    "count": 195
+  },
+  {
+    "family": "7210",
+    "description": "Reparación o mantenimiento del sistema de plomería",
+    "count": 195
+  },
+  {
+    "family": "3013",
+    "description": "Ladrillos de cerámica",
+    "count": 177
+  },
+  {
+    "family": "8411",
+    "description": "Servicio de contabilidad de inventarios",
+    "count": 165
+  },
+  {
+    "family": "5310",
+    "description": "Uniformes",
+    "count": 164
+  },
+  {
+    "family": "4017",
+    "description": "Tubería comercial de PVC",
+    "count": 162
+  },
+  {
+    "family": "8011",
+    "description": "Desarrollo de gestión",
+    "count": 156
+  },
+  {
+    "family": "8116",
+    "description": "Servicio de arrendamiento o alquiler de plataforma o equipo de comunicación de datos",
+    "count": 156
+  },
+  {
+    "family": "1010",
+    "description": "Ganado vacuno",
+    "count": 149
+  },
+  {
+    "family": "8610",
+    "description": "Desarrollo de fuerza de trabajo del sector administrativo",
+    "count": 145
+  },
+  {
+    "family": "2611",
+    "description": "Generadores diesel",
+    "count": 143
+  },
+  {
+    "family": "5512",
+    "description": "Tarjetas o carnets de identificación o productos similares",
+    "count": 142
+  },
+  {
+    "family": "4220",
+    "description": "Unidades de ecografía o ecografía de pulso o doppler o ultrasonido médico para uso diagnóstico general",
+    "count": 140
+  },
+  {
+    "family": "8310",
+    "description": "Servicios de transmisión de energía eléctrica",
+    "count": 133
+  },
+  {
+    "family": "7814",
+    "description": "Servicios de expedición de carga",
+    "count": 132
+  },
+  {
+    "family": "9012",
+    "description": "Agencias de viajes",
+    "count": 129
+  },
+  {
+    "family": "8016",
+    "description": "Servicios de oficina",
+    "count": 128
+  },
+  {
+    "family": "8512",
+    "description": "Servicios de laboratorios de radiografías",
+    "count": 128
+  },
+  {
+    "family": "4321",
+    "description": "Servidor de computadora",
+    "count": 122
+  },
+  {
+    "family": "1015",
+    "description": "Semillas o plántulas de césped",
+    "count": 118
+  },
+  {
+    "family": "4227",
+    "description": "Cilindros de gas médicos o dispositivos relacionados",
+    "count": 118
+  },
+  {
+    "family": "8510",
+    "description": "Servicio para administrar consultorios médicos",
+    "count": 118
+  },
+  {
+    "family": "5011",
+    "description": "Pollo mínimamente procesado sin aditivos",
+    "count": 114
+  },
+  {
+    "family": "9011",
+    "description": "Hoteles",
+    "count": 114
+  },
+  {
+    "family": "8012",
+    "description": "Servicios de investigación legal",
+    "count": 113
+  },
+  {
+    "family": "8413",
+    "description": "Seguro de vida",
+    "count": 112
+  },
+  {
+    "family": "5015",
+    "description": "Aceites comestibles vegetales o de plantas",
+    "count": 108
+  },
+  {
+    "family": "4010",
+    "description": "Aires acondicionados y accesorios",
+    "count": 105
+  },
+  {
+    "family": "4222",
+    "description": "Kits o accesorios de bombas de infusión",
+    "count": 102
+  },
+  {
+    "family": "1012",
+    "description": "Alimentación compuesta",
+    "count": 100
+  },
+  {
+    "family": "2411",
+    "description": "Bolsas de plástico",
+    "count": 100
+  },
+  {
+    "family": "8115",
+    "description": "Levantamiento del terreno",
+    "count": 100
+  },
+  {
+    "family": "5510",
+    "description": "Publicaciones periodicas",
+    "count": 98
+  },
+  {
+    "family": "2517",
+    "description": "Neumáticos para camiones pesados",
+    "count": 94
+  },
+  {
+    "family": "1235",
+    "description": "Sales metálicas inorgánicas",
+    "count": 91
+  },
+  {
+    "family": "2410",
+    "description": "Compactador estacionario para basura",
+    "count": 90
+  },
+  {
+    "family": "2110",
+    "description": "Trituradoras de martillo",
+    "count": 88
+  },
+  {
+    "family": "2711",
+    "description": "Segadora de césped",
+    "count": 86
+  },
+  {
+    "family": "4710",
+    "description": "Digestores de lodos o aguas residuales",
+    "count": 85
+  },
+  {
+    "family": "1112",
+    "description": "Madera tornillo",
+    "count": 84
+  },
+  {
+    "family": "3026",
+    "description": "Lámina de acero corrugado",
+    "count": 84
+  },
+  {
+    "family": "7017",
+    "description": "Servicios de administración de sistemas de riego",
+    "count": 83
+  },
+  {
+    "family": "7610",
+    "description": "Servicios de desinfección o deodorización",
+    "count": 82
+  },
+  {
+    "family": "8412",
+    "description": "Servicios de custodia de valores",
+    "count": 81
+  },
+  {
+    "family": "9314",
+    "description": "Servicios de seguridad o salud ocupacional",
+    "count": 80
+  },
+  {
+    "family": "9510",
+    "description": "Granja",
+    "count": 79
+  },
+  {
+    "family": "2210",
+    "description": "Retroexcavadoras",
+    "count": 78
+  },
+  {
+    "family": "1214",
+    "description": "Cloro (Cl)",
+    "count": 76
+  },
+  {
+    "family": "4223",
+    "description": "Fórmulas suplementarias de adulto para uso general",
+    "count": 74
+  },
+  {
+    "family": "5020",
+    "description": "Agua",
+    "count": 74
+  },
+  {
+    "family": "9512",
+    "description": "Parque",
+    "count": 74
+  },
+  {
+    "family": "8612",
+    "description": "Programas de postgrado",
+    "count": 73
+  },
+  {
+    "family": "4213",
+    "description": "Uniformes para el personal médico",
+    "count": 72
+  },
+  {
+    "family": "2513",
+    "description": "Aviones objetivo o de reconocimiento",
+    "count": 71
+  },
+  {
+    "family": "4218",
+    "description": "Unidades o accesorios de signos vitales multiparámetros",
+    "count": 69
+  },
+  {
+    "family": "5016",
+    "description": "Azúcares naturales o productos edulcorantes",
+    "count": 69
+  },
+  {
+    "family": "7011",
+    "description": "Servicios de gestión o mantenimiento de parques",
+    "count": 69
+  },
+  {
+    "family": "5311",
+    "description": "Zapatos para caballero",
+    "count": 67
+  },
+  {
+    "family": "3017",
+    "description": "Puertas de madera",
+    "count": 65
+  },
+  {
+    "family": "1512",
+    "description": "Aceite de motor",
+    "count": 63
+  },
+  {
+    "family": "3912",
+    "description": "Fuente de energía ininterrumpida UPS",
+    "count": 62
+  },
+  {
+    "family": "2612",
+    "description": "Cable de cobre",
+    "count": 61
+  },
+  {
+    "family": "5119",
+    "description": "Electrolitos de cloruro de sodio",
+    "count": 61
+  },
+  {
+    "family": "4323",
+    "description": "Software de protección antivirus y de seguridad de transacciones",
+    "count": 60
+  },
+  {
+    "family": "4110",
+    "description": "Concentradores de vacío o centrífugos",
+    "count": 59
+  },
+  {
+    "family": "8414",
+    "description": "Proveedores de servicios de tarjetas de crédito",
+    "count": 58
+  },
+  {
+    "family": "1017",
+    "description": "Mezclas Nitrógeno Fósforo Potasio",
+    "count": 57
+  },
+  {
+    "family": "4322",
+    "description": "Equipo de acceso satelital",
+    "count": 57
+  },
+  {
+    "family": "5199",
+    "description": "Medicamentos y productos farmacéuticos",
+    "count": 57
+  },
+  {
+    "family": "5612",
+    "description": "Escritorios para estudiantes",
+    "count": 57
+  },
+  {
+    "family": "1411",
+    "description": "Formularios o cuestionarios comerciales",
+    "count": 56
+  },
+  {
+    "family": "7211",
+    "description": "Servicios de remodelación de dormitorios colectivos",
+    "count": 54
+  },
+  {
+    "family": "3015",
+    "description": "Techado prearmado",
+    "count": 53
+  },
+  {
+    "family": "8213",
+    "description": "Servicios de producción de videos",
+    "count": 52
+  },
+  {
+    "family": "8410",
+    "description": "Asistencia financiera",
+    "count": 50
+  },
+  {
+    "family": "4618",
+    "description": "Botas de seguridad",
+    "count": 49
+  },
+  {
+    "family": "4229",
+    "description": "Accesorios de depósito de autotransfusión",
+    "count": 47
+  },
+  {
+    "family": "7015",
+    "description": "Servicios de administración forestal",
+    "count": 47
+  },
+  {
+    "family": "5120",
+    "description": "Gamma IGG o immunoglobulina",
+    "count": 46
+  },
+  {
+    "family": "1019",
+    "description": "Insecticidas",
+    "count": 45
+  },
+  {
+    "family": "4016",
+    "description": "Filtros de aceite",
+    "count": 45
+  },
+  {
+    "family": "7813",
+    "description": "Almacenamiento de muebles",
+    "count": 45
+  },
+  {
+    "family": "8515",
+    "description": "Servicios de análisis de alimentos",
+    "count": 45
+  },
+  {
+    "family": "8614",
+    "description": "Servicios de biblioteca o documentación",
+    "count": 45
+  },
+  {
+    "family": "3016",
+    "description": "Pisos de caucho",
+    "count": 44
+  },
+  {
+    "family": "5610",
+    "description": "Escritorios",
+    "count": 44
+  },
+  {
+    "family": "9313",
+    "description": "Servicios de suministro de alimentos",
+    "count": 44
+  },
+  {
+    "family": "4219",
+    "description": "Camas de cuidado del paciente o accesorios de uso general",
+    "count": 43
+  },
+  {
+    "family": "4912",
+    "description": "Carpas",
+    "count": 43
+  },
+  {
+    "family": "5212",
+    "description": "Frazadas",
+    "count": 43
+  },
+  {
+    "family": "4810",
+    "description": "Molinos de alimentos de uso comercial",
+    "count": 42
+  },
+  {
+    "family": "2312",
+    "description": "Maquinaria para bordados",
+    "count": 41
+  },
+  {
+    "family": "7314",
+    "description": "Servicios de costura industrial",
+    "count": 41
+  },
+  {
+    "family": "1310",
+    "description": "Caucho procesado y sintético",
+    "count": 40
+  },
+  {
+    "family": "4215",
+    "description": "Unidades de curación de laboratorio dental",
+    "count": 40
+  },
+  {
+    "family": "4216",
+    "description": "Soluciones para diálisis peritoneal",
+    "count": 40
+  },
+  {
+    "family": "4228",
+    "description": "Esterilizadores o autoclaves de vapor",
+    "count": 40
+  },
+  {
+    "family": "5313",
+    "description": "Productos para la protección contra el sol",
+    "count": 40
+  },
+  {
+    "family": "7013",
+    "description": "Análisis de fertilidad del suelo",
+    "count": 40
+  },
+  {
+    "family": "7318",
+    "description": "Servicios de fresado químico",
+    "count": 40
+  },
+  {
+    "family": "1216",
+    "description": "Aditivo de concreto",
+    "count": 39
+  },
+  {
+    "family": "5113",
+    "description": "Albúmina humana",
+    "count": 39
+  },
+  {
+    "family": "5312",
+    "description": "Mochilas",
+    "count": 39
+  },
+  {
+    "family": "4214",
+    "description": "Jeringas médicas con aguja",
+    "count": 38
+  },
+  {
+    "family": "4224",
+    "description": "Dispositivos prostéticos de la extremidad inferior",
+    "count": 38
+  },
+  {
+    "family": "7316",
+    "description": "Servicios de fabricación de aeronaves o naves espaciales",
+    "count": 38
+  },
+  {
+    "family": "2610",
+    "description": "Motor fuera de borda a gasolina",
+    "count": 37
+  },
+  {
+    "family": "4015",
+    "description": "Bombas sumergibles",
+    "count": 36
+  },
+  {
+    "family": "5216",
+    "description": "Televisores",
+    "count": 36
+  },
+  {
+    "family": "7299",
+    "description": "Servicios de Construcción y Mantenimiento",
+    "count": 36
+  },
+  {
+    "family": "7899",
+    "description": "Servicios de Transporte, Almacenaje y Correo",
+    "count": 35
+  },
+  {
+    "family": "3121",
+    "description": "Pinturas al esmalte",
+    "count": 34
+  },
+  {
+    "family": "4617",
+    "description": "Grabadoras de sonido o video de vigilancia",
+    "count": 34
+  },
+  {
+    "family": "7712",
+    "description": "Servicios de tratamiento de aguas superficiales",
+    "count": 34
+  },
+  {
+    "family": "1116",
+    "description": "Tejidos de lana de ligamento de sarga",
+    "count": 33
+  },
+  {
+    "family": "2613",
+    "description": "Conmutadores de control de carga de subestación",
+    "count": 32
+  },
+  {
+    "family": "5114",
+    "description": "Valproato sódico",
+    "count": 32
+  },
+  {
+    "family": "1013",
+    "description": "Jaulas o sus accesorios",
+    "count": 31
+  },
+  {
+    "family": "1219",
+    "description": "Solventes activos",
+    "count": 31
+  },
+  {
+    "family": "4512",
+    "description": "Videocámaras o cámaras de video digitales",
+    "count": 31
+  },
+  {
+    "family": "5118",
+    "description": "Insulina",
+    "count": 31
+  },
+  {
+    "family": "8017",
+    "description": "Servicio de asesoría y relaciones con los medios de comunicación",
+    "count": 31
+  },
+  {
+    "family": "4713",
+    "description": "Productos de lavandería (Cloro, Detergente, Suavizante)",
+    "count": 30
+  },
+  {
+    "family": "7812",
+    "description": "Carga y descarga de mercancías",
+    "count": 30
+  },
+  {
+    "family": "3018",
+    "description": "Inodoros",
+    "count": 29
+  },
+  {
+    "family": "5042",
+    "description": "Lentejas secas",
+    "count": 29
+  },
+  {
+    "family": "6014",
+    "description": "Juegos educativos",
+    "count": 29
+  },
+  {
+    "family": "5611",
+    "description": "Asientos de auditorio, estadio o de uso especial",
+    "count": 28
+  },
+  {
+    "family": "3115",
+    "description": "Cable de acero no eléctrico",
+    "count": 27
+  },
+  {
+    "family": "3910",
+    "description": "Lámpara cialítica de cirugía que no produce sombra",
+    "count": 27
+  },
+  {
+    "family": "4014",
+    "description": "Mangueras especiales",
+    "count": 27
+  },
+  {
+    "family": "2511",
+    "description": "Barco de personal de gas o petróleo",
+    "count": 26
+  },
+  {
+    "family": "3116",
+    "description": "Gavión",
+    "count": 26
+  },
+  {
+    "family": "8613",
+    "description": "Servicio de entrenamiento ejecutivo",
+    "count": 26
+  },
+  {
+    "family": "2519",
+    "description": "Sistemas de ensayo o mantenimiento de apoyo terrestre",
+    "count": 25
+  },
+  {
+    "family": "4212",
+    "description": "Productos formadores de sangre o sangre para uso veterinario",
+    "count": 25
+  },
+  {
+    "family": "7014",
+    "description": "Servicios de secadoras de granos",
+    "count": 24
+  },
+  {
+    "family": "7110",
+    "description": "Servicios de voladura de mina",
+    "count": 24
+  },
+  {
+    "family": "4410",
+    "description": "Tóner para impresora o fax",
+    "count": 23
+  },
+  {
+    "family": "5018",
+    "description": "Pan fresco",
+    "count": 23
+  },
+  {
+    "family": "9212",
+    "description": "Servicios de vigilantes",
+    "count": 22
+  },
+  {
+    "family": "1113",
+    "description": "Semen",
+    "count": 21
+  },
+  {
+    "family": "3911",
+    "description": "Iluminación para pistas y carreteras",
+    "count": 21
+  },
+  {
+    "family": "4231",
+    "description": "Apósitos de película transparente",
+    "count": 21
+  },
+  {
+    "family": "4511",
+    "description": "Sistemas de videoconferencia",
+    "count": 21
+  },
+  {
+    "family": "5111",
+    "description": "Trastuzumab",
+    "count": 21
+  },
+  {
+    "family": "8211",
+    "description": "Servicios de redacción de manuales",
+    "count": 21
+  },
+  {
+    "family": "8215",
+    "description": "Servicios de escultores",
+    "count": 21
+  },
+  {
+    "family": "2413",
+    "description": "Congeladores verticales",
+    "count": 20
+  },
+  {
+    "family": "3022",
+    "description": "Estructuras Permanentes",
+    "count": 20
+  },
+  {
+    "family": "5121",
+    "description": "Iopamidol",
+    "count": 20
+  },
+  {
+    "family": "5214",
+    "description": "Moledoras de café domésticas",
+    "count": 20
+  },
+  {
+    "family": "7116",
+    "description": "Servicios de base costera",
+    "count": 20
+  },
+  {
+    "family": "6012",
+    "description": "Carteles",
+    "count": 19
+  },
+  {
+    "family": "8214",
+    "description": "Servicios de edición de gráficos o diseños",
+    "count": 19
+  },
+  {
+    "family": "7312",
+    "description": "Servicios de corte de metales",
+    "count": 18
+  },
+  {
+    "family": "1016",
+    "description": "Cacaos",
+    "count": 17
+  },
+  {
+    "family": "3210",
+    "description": "Circuito integrado de procesador de video o medios de comunicación",
+    "count": 17
+  },
+  {
+    "family": "4217",
+    "description": "Desfibriladores externos automatizados (DEA) o paletas rígidas",
+    "count": 17
+  },
+  {
+    "family": "4411",
+    "description": "Organizadores o cajas de almacenamiento de archivos",
+    "count": 17
+  },
+  {
+    "family": "7115",
+    "description": "Backup y almacenamiento de datos",
+    "count": 17
+  },
+  {
+    "family": "4112",
+    "description": "Tubos de ensayo multipropósito o generales",
+    "count": 16
+  },
+  {
+    "family": "4232",
+    "description": "Prótesis para hemiartroplastía de cadera de una pieza",
+    "count": 16
+  },
+  {
+    "family": "4619",
+    "description": "Extintores",
+    "count": 16
+  },
+  {
+    "family": "4712",
+    "description": "Bolsas de basura",
+    "count": 16
+  },
+  {
+    "family": "5117",
+    "description": "Magaldrato",
+    "count": 16
+  },
+  {
+    "family": "5147",
+    "description": "Gluconato de clorhexidina",
+    "count": 16
+  },
+  {
+    "family": "2012",
+    "description": "Sistemas de topografía",
+    "count": 15
+  },
+  {
+    "family": "4018",
+    "description": "Sistema de tuberías de plástico PAD",
+    "count": 15
+  },
+  {
+    "family": "5110",
+    "description": "Amoxicilina",
+    "count": 15
+  },
+  {
+    "family": "9513",
+    "description": "Oficina de emplazamiento",
+    "count": 15
+  },
+  {
+    "family": "1115",
+    "description": "Hebras de lana",
+    "count": 14
+  },
+  {
+    "family": "2412",
+    "description": "Sacos para empaquetado",
+    "count": 14
+  },
+  {
+    "family": "3120",
+    "description": "Adhesivos químicos",
+    "count": 14
+  },
+  {
+    "family": "4225",
+    "description": "Aparatos de terapia ultrasónica o suministros",
+    "count": 14
+  },
+  {
+    "family": "4320",
+    "description": "Unidades de discos duros",
+    "count": 14
+  },
+  {
+    "family": "4910",
+    "description": "Medallas",
+    "count": 14
+  },
+  {
+    "family": "6010",
+    "description": "Materiales de apoyo de la unidad temática",
+    "count": 14
+  },
+  {
+    "family": "2315",
+    "description": "Maquinaria de formar, rellenar o sellar",
+    "count": 13
+  },
+  {
+    "family": "4924",
+    "description": "Toboganes para parques infantiles",
+    "count": 13
+  },
+  {
+    "family": "5050",
+    "description": "Suplemento multivitaminico",
+    "count": 13
+  },
+  {
+    "family": "5115",
+    "description": "Bromhidrato de escopolamina",
+    "count": 13
+  },
+  {
+    "family": "7010",
+    "description": "Servicios de investigación o experimentación pesquera",
+    "count": 13
+  },
+  {
+    "family": "3126",
+    "description": "Cubiertas y cajas metálicas",
+    "count": 12
+  },
+  {
+    "family": "3215",
+    "description": "Caja de distribución eléctrica para sistema de control",
+    "count": 12
+  },
+  {
+    "family": "8015",
+    "description": "Servicios de información comercial",
+    "count": 12
+  },
+  {
+    "family": "9317",
+    "description": "Procedimientos o políticas de comercio mundial",
+    "count": 12
+  },
+  {
+    "family": "9413",
+    "description": "Servicios no gubernamentales de asistencia técnica",
+    "count": 12
+  },
+  {
+    "family": "1011",
+    "description": "Tazones y equipos para comida de animales domésticos",
+    "count": 11
+  },
+  {
+    "family": "2318",
+    "description": "Maquinaria para la elaboración de alimentos",
+    "count": 11
+  },
+  {
+    "family": "3019",
+    "description": "Caseta de obra",
+    "count": 11
+  },
+  {
+    "family": "4811",
+    "description": "Máquinas dispensadoras de productos en envases pequeños o snacks",
+    "count": 11
+  },
+  {
+    "family": "5124",
+    "description": "Calamina/fenol/óxido de zinc",
+    "count": 11
+  },
+  {
+    "family": "5137",
+    "description": "Buprenorfina",
+    "count": 11
+  },
+  {
+    "family": "5141",
+    "description": "Alteplasa",
+    "count": 11
+  },
+  {
+    "family": "5614",
+    "description": "Bol de metal",
+    "count": 11
+  },
+  {
+    "family": "7012",
+    "description": "Nutrición de animales",
+    "count": 11
+  },
+  {
+    "family": "8611",
+    "description": "Enseñanza de idiomas extranjeros por inmersión",
+    "count": 11
+  },
+  {
+    "family": "2316",
+    "description": "Calderos de fundición",
+    "count": 10
+  },
+  {
+    "family": "4230",
+    "description": "Modelos anatómicos humanos para educación o capacitación médica",
+    "count": 10
+  },
+  {
+    "family": "4616",
+    "description": "Señales de trafico (vallas, anuncios)",
+    "count": 10
+  },
+  {
+    "family": "5138",
+    "description": "Acetaminofen",
+    "count": 10
+  },
+  {
+    "family": "2111",
+    "description": "Redes para pesca comercial",
+    "count": 9
+  },
+  {
+    "family": "2310",
+    "description": "Maquinaria para trabajar madera, piedra, cerámica y similares",
+    "count": 9
+  },
+  {
+    "family": "2327",
+    "description": "Máquina de Soldadura Ultrasónica por fusión",
+    "count": 9
+  },
+  {
+    "family": "4610",
+    "description": "Municiones para defensa u orden público",
+    "count": 9
+  },
+  {
+    "family": "4711",
+    "description": "Lavadoras tipo lavandería",
+    "count": 9
+  },
+  {
+    "family": "5010",
+    "description": "Nueces y semillas enteras",
+    "count": 9
+  },
+  {
+    "family": "5213",
+    "description": "Cortinas",
+    "count": 9
+  },
+  {
+    "family": "6013",
+    "description": "Trompetas",
+    "count": 9
+  },
+  {
+    "family": "7016",
+    "description": "Servicios de manejo de ecosistemas marinos",
+    "count": 9
+  },
+  {
+    "family": "7112",
+    "description": "Servicios de mantenimiento de tubos del yacimiento petrolero",
+    "count": 9
+  },
+  {
+    "family": "9310",
+    "description": "Servicios de estadistas",
+    "count": 9
+  },
+  {
+    "family": "2014",
+    "description": "Tanque colector de plástico",
+    "count": 8
+  },
+  {
+    "family": "2414",
+    "description": "Sellos de seguridad o a prueba de entremetido",
+    "count": 8
+  },
+  {
+    "family": "2712",
+    "description": "Prensa hidráulica industrial",
+    "count": 8
+  },
+  {
+    "family": "4319",
+    "description": "Teléfonos móviles",
+    "count": 8
+  },
+  {
+    "family": "4412",
+    "description": "Bolígrafos",
+    "count": 8
+  },
+  {
+    "family": "4615",
+    "description": "Barreras",
+    "count": 8
+  },
+  {
+    "family": "5040",
+    "description": "Cebollas rojas",
+    "count": 8
+  },
+  {
+    "family": "5116",
+    "description": "Poractant alfa",
+    "count": 8
+  },
+  {
+    "family": "5144",
+    "description": "Gadolinio",
+    "count": 8
+  },
+  {
+    "family": "5613",
+    "description": "Canastas de productos",
+    "count": 8
+  },
+  {
+    "family": "8112",
+    "description": "Análisis macroeconómico",
+    "count": 8
+  },
+  {
+    "family": "9014",
+    "description": "Eventos deportivos profesionales patrocinados por la empresa",
+    "count": 8
+  },
+  {
+    "family": "9514",
+    "description": "Garita de vigilancia",
+    "count": 8
+  },
+  {
+    "family": "2324",
+    "description": "Máquina de aserrar y trocear",
+    "count": 7
+  },
+  {
+    "family": "2518",
+    "description": "Remolques de plataforma",
+    "count": 7
+  },
+  {
+    "family": "3140",
+    "description": "Juegos de juntas troqueladas",
+    "count": 7
+  },
+  {
+    "family": "3141",
+    "description": "Sello mecánico de fuelle",
+    "count": 7
+  },
+  {
+    "family": "4920",
+    "description": "Máquinas de ejercicios múltiples",
+    "count": 7
+  },
+  {
+    "family": "5112",
+    "description": "Losartán potásico",
+    "count": 7
+  },
+  {
+    "family": "7613",
+    "description": "Limpieza de derrames de sustancias toxicas",
+    "count": 7
+  },
+  {
+    "family": "2011",
+    "description": "Equipo de perforación de pozos de agua",
+    "count": 6
+  },
+  {
+    "family": "2311",
+    "description": "Maquinaria para destilación de crudo",
+    "count": 6
+  },
+  {
+    "family": "2314",
+    "description": "Equipo para talleres de trabajo en cuero",
+    "count": 6
+  },
+  {
+    "family": "2320",
+    "description": "Equipo de secado industrial",
+    "count": 6
+  },
+  {
+    "family": "2713",
+    "description": "Juego de herramientas neumáticas",
+    "count": 6
+  },
+  {
+    "family": "3118",
+    "description": "Prensaestopas",
+    "count": 6
+  },
+  {
+    "family": "4916",
+    "description": "Balones de fútbol",
+    "count": 6
+  },
+  {
+    "family": "4922",
+    "description": "Colchonetas o almohadillas deportivas",
+    "count": 6
+  },
+  {
+    "family": "5127",
+    "description": "Remifentanilo",
+    "count": 6
+  },
+  {
+    "family": "5128",
+    "description": "Ceftazidima",
+    "count": 6
+  },
+  {
+    "family": "7311",
+    "description": "Servicios de fabricación de muebles",
+    "count": 6
+  },
+  {
+    "family": "2516",
+    "description": "Bicicletas",
+    "count": 5
+  },
+  {
+    "family": "2520",
+    "description": "Sistemas de extinción o de Control de incendios de aeronaves",
+    "count": 5
+  },
+  {
+    "family": "3014",
+    "description": "Ladrillos aislantes térmicos",
+    "count": 5
+  },
+  {
+    "family": "3117",
+    "description": "Rodamientos de bolas",
+    "count": 5
+  },
+  {
+    "family": "3125",
+    "description": "Actuadores eléctricos",
+    "count": 5
+  },
+  {
+    "family": "3212",
+    "description": "Inversores",
+    "count": 5
+  },
+  {
+    "family": "5017",
+    "description": "Especias o extractos",
+    "count": 5
+  },
+  {
+    "family": "5030",
+    "description": "Naranjas valencia",
+    "count": 5
+  },
+  {
+    "family": "5126",
+    "description": "Tamsulosina",
+    "count": 5
+  },
+  {
+    "family": "5134",
+    "description": "Aciclovir o aciclovir",
+    "count": 5
+  },
+  {
+    "family": "5142",
+    "description": "Budesonida",
+    "count": 5
+  },
+  {
+    "family": "5511",
+    "description": "Libros en cinta o disco compacto",
+    "count": 5
+  },
+  {
+    "family": "7111",
+    "description": "Servicios de video de fondo de pozo del registro de producción",
+    "count": 5
+  },
+  {
+    "family": "72",
+    "description": "Servicios de construcción y mantenimiento de instalaciones y edificios",
+    "count": 5
+  },
+  {
+    "family": "7317",
+    "description": "Servicios de fabricación de equipos fotográficos u ópticos",
+    "count": 5
+  },
+  {
+    "family": "78",
+    "description": "Servicios de transporte, almacenamiento y correspondencia",
+    "count": 5
+  },
+  {
+    "family": "9211",
+    "description": "Defensa civil",
+    "count": 5
+  },
+  {
+    "family": "9312",
+    "description": "Servicios de terceros en las negociaciones o demandas territoriales",
+    "count": 5
+  },
+  {
+    "family": "9316",
+    "description": "Sistemas tributarios",
+    "count": 5
+  },
+  {
+    "family": "1311",
+    "description": "Polietileno de baja densidad lineal",
+    "count": 4
+  },
+  {
+    "family": "2010",
+    "description": "Cribas",
+    "count": 4
+  },
+  {
+    "family": "2325",
+    "description": "Troquel para estampado",
+    "count": 4
+  },
+  {
+    "family": "3024",
+    "description": "Tabla base para tribuna y accesorios",
+    "count": 4
+  },
+  {
+    "family": "3119",
+    "description": "Cuentas de vidrio",
+    "count": 4
+  },
+  {
+    "family": "3913",
+    "description": "Accesorio de conducto eléctrico",
+    "count": 4
+  },
+  {
+    "family": "4119",
+    "description": "Procesador de tejidos automatizado",
+    "count": 4
+  },
+  {
+    "family": "4221",
+    "description": "Audifono para personas con problemas auditivos",
+    "count": 4
+  },
+  {
+    "family": "4226",
+    "description": "Transportadores de cadáveres",
+    "count": 4
+  },
+  {
+    "family": "4514",
+    "description": "Fijador",
+    "count": 4
+  },
+  {
+    "family": "5129",
+    "description": "Aripiprazol",
+    "count": 4
+  },
+  {
+    "family": "5130",
+    "description": "Posaconazol",
+    "count": 4
+  },
+  {
+    "family": "5140",
+    "description": "Olanzapina",
+    "count": 4
+  },
+  {
+    "family": "5143",
+    "description": "Atomoxetina",
+    "count": 4
+  },
+  {
+    "family": "5146",
+    "description": "Condroitina/glucosamina/hialuronato",
+    "count": 4
+  },
+  {
+    "family": "5215",
+    "description": "Cuchillos panaderos",
+    "count": 4
+  },
+  {
+    "family": "9010",
+    "description": "Servicios de reparto de comidas y bebidas",
+    "count": 4
+  },
+  {
+    "family": "9015",
+    "description": "Servicio de asistencia personal",
+    "count": 4
+  },
+  {
+    "family": "9299",
+    "description": "Servicios de Defensa Nacional, Orden Público y Seguridad",
+    "count": 4
+  },
+  {
+    "family": "9511",
+    "description": "Calle o avenida o carretera o bulevar",
+    "count": 4
+  },
+  {
+    "family": "1412",
+    "description": "Papel de seda Kraft",
+    "count": 3
+  },
+  {
+    "family": "2313",
+    "description": "Alisadoras de ruedas de esmerilar",
+    "count": 3
+  },
+  {
+    "family": "2322",
+    "description": "Aturdidor",
+    "count": 3
+  },
+  {
+    "family": "2323",
+    "description": "Rodillo de fijación",
+    "count": 3
+  },
+  {
+    "family": "2330",
+    "description": "Equipo para montaje de terminales y corte de cables y alambres",
+    "count": 3
+  },
+  {
+    "family": "3137",
+    "description": "Ladrillos moldeados",
+    "count": 3
+  },
+  {
+    "family": "4510",
+    "description": "Consumibles para impresión offset",
+    "count": 3
+  },
+  {
+    "family": "4622",
+    "description": "Dispositivo antimanipulación de minas",
+    "count": 3
+  },
+  {
+    "family": "4914",
+    "description": "Instrumentos o accesorios para buceo",
+    "count": 3
+  },
+  {
+    "family": "4921",
+    "description": "Equipos de orientación",
+    "count": 3
+  },
+  {
+    "family": "5133",
+    "description": "Clorpromazina",
+    "count": 3
+  },
+  {
+    "family": "5135",
+    "description": "Estradiol/hidroxiprogesterona",
+    "count": 3
+  },
+  {
+    "family": "5145",
+    "description": "Albendazol",
+    "count": 3
+  },
+  {
+    "family": "7713",
+    "description": "Servicios de control de ruidos",
+    "count": 3
+  },
+  {
+    "family": "8113",
+    "description": "Análisis multivariado",
+    "count": 3
+  },
+  {
+    "family": "8526",
+    "description": "Diagnóstico de Sobrecarga de líquidos",
+    "count": 3
+  },
+  {
+    "family": "1014",
+    "description": "Sillas de montar",
+    "count": 2
+  },
+  {
+    "family": "1020",
+    "description": "Rosal vivo fragancia púrpura",
+    "count": 2
+  },
+  {
+    "family": "1021",
+    "description": "Retama viva escocesa amarilla",
+    "count": 2
+  },
+  {
+    "family": "1031",
+    "description": "Azucena agua fresca cortada",
+    "count": 2
+  },
+  {
+    "family": "1110",
+    "description": "Carbón activado",
+    "count": 2
+  },
+  {
+    "family": "1213",
+    "description": "Bengalas",
+    "count": 2
+  },
+  {
+    "family": "1217",
+    "description": "Colorantes fdc seguros para alimentos, fármacos o cosméticos",
+    "count": 2
+  },
+  {
+    "family": "1218",
+    "description": "Aceites sintéticos",
+    "count": 2
+  },
+  {
+    "family": "2328",
+    "description": "Máquina de calefacción por inducción",
+    "count": 2
+  },
+  {
+    "family": "2614",
+    "description": "Plomo para blindaje contra la radiación",
+    "count": 2
+  },
+  {
+    "family": "3128",
+    "description": "Componentes laminados compuestos",
+    "count": 2
+  },
+  {
+    "family": "3133",
+    "description": "Conjuntos estructurales de latón con acabado ligado",
+    "count": 2
+  },
+  {
+    "family": "3211",
+    "description": "Transistor bipolar o de radiofrecuencia bipolar",
+    "count": 2
+  },
+  {
+    "family": "3213",
+    "description": "Soportes o zócalos de circuito integrado",
+    "count": 2
+  },
+  {
+    "family": "4099",
+    "description": "Sistemas, Equipos y Componentes de Distribución y Acondicionamiento",
+    "count": 2
+  },
+  {
+    "family": "4120",
+    "description": "Ensayo de endotoxinas",
+    "count": 2
+  },
+  {
+    "family": "4614",
+    "description": "Lanzadores de cohetes",
+    "count": 2
+  },
+  {
+    "family": "4812",
+    "description": "Ruletas",
+    "count": 2
+  },
+  {
+    "family": "4917",
+    "description": "Barras de equilibrio para gimnasia",
+    "count": 2
+  },
+  {
+    "family": "5038",
+    "description": "Purés de aceituna sevillano",
+    "count": 2
+  },
+  {
+    "family": "5139",
+    "description": "Albuterol",
+    "count": 2
+  },
+  {
+    "family": "5210",
+    "description": "Alfombras sintéticas",
+    "count": 2
+  },
+  {
+    "family": "5410",
+    "description": "Pulseras",
+    "count": 2
+  },
+  {
+    "family": "9410",
+    "description": "Asociaciones de abogados",
+    "count": 2
+  },
+  {
+    "family": "9412",
+    "description": "Servicios de promotores o gestores de clubes deportivos",
+    "count": 2
+  },
+  {
+    "family": "1034",
+    "description": "Ramo de peonia, clavel y rosa frescas cortadas",
+    "count": 1
+  },
+  {
+    "family": "1050",
+    "description": "Acacia púrpura fresca cortada",
+    "count": 1
+  },
+  {
+    "family": "1114",
+    "description": "Desperdicios o restos de caucho",
+    "count": 1
+  },
+  {
+    "family": "2013",
+    "description": "Arenas de fracturamiento cubiertas de resina",
+    "count": 1
+  },
+  {
+    "family": "2319",
+    "description": "Mezcladora de arena",
+    "count": 1
+  },
+  {
+    "family": "2321",
+    "description": "Sistema de marcación de panel de circuito impreso",
+    "count": 1
+  },
+  {
+    "family": "2515",
+    "description": "Estructuras de naves espaciales",
+    "count": 1
+  },
+  {
+    "family": "3122",
+    "description": "Extractos inorgánicos para curtidos",
+    "count": 1
+  },
+  {
+    "family": "3123",
+    "description": "Metal precioso en barra mecanizada",
+    "count": 1
+  },
+  {
+    "family": "3124",
+    "description": "Bóvedas de policarbonato moldeado",
+    "count": 1
+  },
+  {
+    "family": "3131",
+    "description": "Conjuntos de tubería de acero al carbono de soldadura sónica",
+    "count": 1
+  },
+  {
+    "family": "3136",
+    "description": "Conjuntos de placas de aluminio soldados o soldados en fuerte",
+    "count": 1
+  },
+  {
+    "family": "4118",
+    "description": "Sistema de prueba inmunológica de autoanticuerpos contra la tiroides",
+    "count": 1
+  },
+  {
+    "family": "4513",
+    "description": "Cintas de video en blanco",
+    "count": 1
+  },
+  {
+    "family": "4611",
+    "description": "Granadas",
+    "count": 1
+  },
+  {
+    "family": "50",
+    "description": "Alimentos y bebidas para consumo humano",
+    "count": 1
+  },
+  {
+    "family": "5043",
+    "description": "Arvejas orgánicas secas de jardín",
+    "count": 1
+  },
+  {
+    "family": "5131",
+    "description": "Bosentan",
+    "count": 1
+  },
+  {
+    "family": "5132",
+    "description": "Ciprofibrato",
+    "count": 1
+  },
+  {
+    "family": "5314",
+    "description": "Agujas de crochet",
+    "count": 1
+  },
+  {
+    "family": "6011",
+    "description": "Botones decorativos",
+    "count": 1
+  },
+  {
+    "family": "7113",
+    "description": "Servicios de bombeo de fondo de pozo",
+    "count": 1
+  },
+  {
+    "family": "7310",
+    "description": "Servicios de fabricación de plásticos, resinas o fibras",
+    "count": 1
+  },
+  {
+    "family": "8511",
+    "description": "Servicios de control o prevención de enfermedades coronarias",
+    "count": 1
+  },
+  {
+    "family": "8513",
+    "description": "Servicios de investigación genética",
+    "count": 1
+  },
+  {
+    "family": "8517",
+    "description": "Excavación de tumbas",
+    "count": 1
+  },
+  {
+    "family": "90",
+    "description": "Servicios de viaje, alimentación, alojamiento y entretenimiento",
+    "count": 1
+  },
+  {
+    "family": "9013",
+    "description": "Conciertos",
+    "count": 1
+  },
+  {
+    "family": "9110",
+    "description": "Alquiler de disfraces",
+    "count": 1
+  }
+]

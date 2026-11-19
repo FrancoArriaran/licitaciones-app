@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@import "@licitaciones/ui/styles.css";
+
+@source "../../../../packages/ui/src";
+
+/* FAQ: <details> opens with a short height transition where the browser supports it. */
+:root {
+  interpolate-size: allow-keywords;
+}
+
+details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 220ms ease,
+    content-visibility 220ms allow-discrete;
+}
+
+details[open]::details-content {
+  block-size: auto;
+}
+
+/*
+ * The one orchestrated moment on the landing: the ficha's schedule fills up to
+ * "hoy", the price seal lands, then the WhatsApp notice arrives. Final states are
+ * the resting states, so reduced motion simply shows the finished ficha.
+ */
+@keyframes schedule-fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* Only scale/opacity: the seal's tilt comes from its own `rotate` utility. */
+@keyframes seal-press {
+  0% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes notice-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .anim-schedule {
+    transform-origin: left center;
+    animation: schedule-fill 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 300ms both;
+  }
+
+  .anim-seal {
+    animation: seal-press 520ms cubic-bezier(0.3, 0.8, 0.3, 1) 1250ms both;
+  }
+
+  .anim-notice {
+    animation: notice-in 420ms ease-out 1900ms both;
+  }
+}

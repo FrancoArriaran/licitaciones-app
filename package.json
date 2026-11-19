@@ -1,0 +1,56 @@
+{
+  "name": "licitaciones",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "lint": "eslint . --max-warnings=0",
+    "lint:deps": "depcruise apps packages --config .dependency-cruiser.cjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "pnpm format:check && pnpm lint && pnpm lint:deps && pnpm typecheck && pnpm test",
+    "db:test": "supabase test db",
+    "db:types": "supabase gen types typescript --local --schema public > packages/infra/src/supabase/database.types.ts",
+    "prepare": "husky",
+    "db:types:dev": "node scripts/supabase-remote.mjs gen types typescript --schema public --out packages/infra/src/supabase/database.types.ts",
+    "admin:create": "pnpm --filter @licitaciones/web admin:create",
+    "db:status": "node scripts/supabase-remote.mjs migration list",
+    "db:push": "node scripts/supabase-remote.mjs db push",
+    "jobs:sync": "pnpm --filter @licitaciones/jobs sync",
+    "jobs:notify": "pnpm --filter @licitaciones/jobs notify"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "prettier --write",
+      "eslint --max-warnings=0 --no-warn-ignored"
+    ],
+    "*.{json,md,css,yml,yaml}": "prettier --write"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@eslint/js": "^9.39.5",
+    "@next/eslint-plugin-next": "^16.4.6",
+    "dependency-cruiser": "^18.8.0",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.1",
+    "prettier": "^3.10.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "supabase": "^3.2.0",
+    "turbo": "^2.11.12",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.73.0",
+    "vitest": "^5.1.0"
+  }
+}

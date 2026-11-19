@@ -1,0 +1,8 @@
+legacy/
+data/
+pnpm-lock.yaml
+.next/
+.turbo/
+coverage/
+supabase/.temp/
+packages/infra/src/supabase/database.types.ts

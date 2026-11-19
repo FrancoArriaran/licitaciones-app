@@ -1,0 +1,195 @@
+{
+  "name": "SEACE - Sincronizacion diaria",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 5 * * *"
+            }
+          ]
+        }
+      },
+      "id": "trigger-1",
+      "name": "Cron diario (5am)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\nreturn [{ json: { year: now.getFullYear(), month: String(now.getMonth() + 1).padStart(2, '0') } }];"
+      },
+      "id": "set-period-1",
+      "name": "Calcular año/mes actual",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ \"https://contratacionesabiertas.oece.gob.pe/api/v1/file/seace_v3/json/\" + $json.year + \"/\" + $json.month + \"/\" }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          },
+          "headers": {
+            "parameters": [
+              { "name": "User-Agent", "value": "Mozilla/5.0" }
+            ]
+          }
+        }
+      },
+      "id": "http-request-1",
+      "name": "Descargar ZIP del mes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "operation": "decompress",
+        "binaryPropertyName": "data"
+      },
+      "id": "compression-1",
+      "name": "Descomprimir ZIP",
+      "type": "n8n-nodes-base.compression",
+      "typeVersion": 1,
+      "position": [880, 300]
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "binaryPropertyName": "data"
+      },
+      "id": "extract-json-1",
+      "name": "Leer JSON",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [1100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ver n8n/code_normalize_tenders.js en el repo para la version comentada.\nconst records = $input.first().json.records || [];\nconst rows = [];\n\nfor (const record of records) {\n  const release = record.compiledRelease;\n  if (!release || !release.ocid) continue;\n\n  const tender = release.tender || {};\n  const buyer = release.buyer || {};\n  const parties = release.parties || [];\n\n  let department = null, locality = null, buyerRuc = null;\n  for (const party of parties) {\n    const roles = party.roles || [];\n    if (roles.includes('procuringEntity') || roles.includes('buyer')) {\n      const addr = party.address || {};\n      department = addr.department || department;\n      locality = addr.locality || locality;\n      for (const ident of party.additionalIdentifiers || []) {\n        if (ident.scheme === 'PE-RUC') buyerRuc = ident.id;\n      }\n      break;\n    }\n  }\n\n  let unspscCode = null, unspscFamily = null, unspscSegment = null, unspscDescription = null;\n  outer:\n  for (const item of tender.items || []) {\n    for (const cl of item.additionalClassifications || []) {\n      if (cl.scheme === 'UNSPSC') {\n        unspscCode = cl.id || '';\n        unspscSegment = unspscCode.slice(0, 2);\n        unspscFamily = unspscCode.slice(0, 4);\n        unspscDescription = cl.description || null;\n        break outer;\n      }\n    }\n  }\n\n  const value = tender.value || {};\n  const enquiry = tender.enquiryPeriod || {};\n\n  rows.push({\n    json: {\n      ocid: release.ocid,\n      tender_id: tender.id || null,\n      title: tender.title || null,\n      description: tender.description || null,\n      buyer_name: buyer.name || null,\n      buyer_ruc: buyerRuc,\n      department: department,\n      locality: locality,\n      main_category: tender.mainProcurementCategory || null,\n      procurement_method: tender.procurementMethodDetails || null,\n      amount: value.amount ?? null,\n      currency: value.currency || null,\n      date_published: tender.datePublished || null,\n      enquiry_start: enquiry.startDate || null,\n      enquiry_end: enquiry.endDate || null,\n      unspsc_code: unspscCode,\n      unspsc_segment: unspscSegment,\n      unspsc_family: unspscFamily,\n      unspsc_description: unspscDescription,\n      source_release_date: release.date || null,\n    },\n  });\n}\n\nreturn rows;"
+      },
+      "id": "normalize-tenders-1",
+      "name": "Normalizar tenders",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "const records = $input.first().json.records || [];\nconst rows = [];\n\nfor (const record of records) {\n  const release = record.compiledRelease;\n  if (!release || !release.ocid) continue;\n\n  const docs = (release.tender && release.tender.documents) || [];\n  for (const doc of docs) {\n    if (!doc.id) continue;\n    rows.push({\n      json: {\n        id: doc.id,\n        ocid: release.ocid,\n        url: doc.url || null,\n        format: doc.format || null,\n        document_type: doc.documentType || null,\n        title: doc.title || null,\n        date_published: doc.datePublished || null,\n      },\n    });\n  }\n}\n\nreturn rows;"
+      },
+      "id": "normalize-documents-1",
+      "name": "Normalizar documents",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 420]
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": { "__rl": true, "mode": "list", "value": "public" },
+        "table": { "__rl": true, "mode": "list", "value": "tenders" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": ["ocid"],
+          "value": {
+            "ocid": "={{ $json.ocid }}",
+            "tender_id": "={{ $json.tender_id }}",
+            "title": "={{ $json.title }}",
+            "description": "={{ $json.description }}",
+            "buyer_name": "={{ $json.buyer_name }}",
+            "buyer_ruc": "={{ $json.buyer_ruc }}",
+            "department": "={{ $json.department }}",
+            "locality": "={{ $json.locality }}",
+            "main_category": "={{ $json.main_category }}",
+            "procurement_method": "={{ $json.procurement_method }}",
+            "amount": "={{ $json.amount }}",
+            "currency": "={{ $json.currency }}",
+            "date_published": "={{ $json.date_published }}",
+            "enquiry_start": "={{ $json.enquiry_start }}",
+            "enquiry_end": "={{ $json.enquiry_end }}",
+            "unspsc_code": "={{ $json.unspsc_code }}",
+            "unspsc_segment": "={{ $json.unspsc_segment }}",
+            "unspsc_family": "={{ $json.unspsc_family }}",
+            "unspsc_description": "={{ $json.unspsc_description }}",
+            "source_release_date": "={{ $json.source_release_date }}",
+            "updated_at": "={{ $now.toISO() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "upsert-tenders-1",
+      "name": "Upsert tenders",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [1560, 180],
+      "credentials": {
+        "postgres": { "id": "REPLACE_ME", "name": "Supabase Postgres" }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": { "__rl": true, "mode": "list", "value": "public" },
+        "table": { "__rl": true, "mode": "list", "value": "documents" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": ["id"],
+          "value": {
+            "id": "={{ $json.id }}",
+            "ocid": "={{ $json.ocid }}",
+            "url": "={{ $json.url }}",
+            "format": "={{ $json.format }}",
+            "document_type": "={{ $json.document_type }}",
+            "title": "={{ $json.title }}",
+            "date_published": "={{ $json.date_published }}",
+            "updated_at": "={{ $now.toISO() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "upsert-documents-1",
+      "name": "Upsert documents",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [1560, 420],
+      "credentials": {
+        "postgres": { "id": "REPLACE_ME", "name": "Supabase Postgres" }
+      }
+    }
+  ],
+  "connections": {
+    "Cron diario (5am)": {
+      "main": [[{ "node": "Calcular año/mes actual", "type": "main", "index": 0 }]]
+    },
+    "Calcular año/mes actual": {
+      "main": [[{ "node": "Descargar ZIP del mes", "type": "main", "index": 0 }]]
+    },
+    "Descargar ZIP del mes": {
+      "main": [[{ "node": "Descomprimir ZIP", "type": "main", "index": 0 }]]
+    },
+    "Descomprimir ZIP": {
+      "main": [[{ "node": "Leer JSON", "type": "main", "index": 0 }]]
+    },
+    "Leer JSON": {
+      "main": [[
+        { "node": "Normalizar tenders", "type": "main", "index": 0 },
+        { "node": "Normalizar documents", "type": "main", "index": 0 }
+      ]]
+    },
+    "Normalizar tenders": {
+      "main": [[{ "node": "Upsert tenders", "type": "main", "index": 0 }]]
+    },
+    "Normalizar documents": {
+      "main": [[{ "node": "Upsert documents", "type": "main", "index": 0 }]]
+    }
+  }
+}

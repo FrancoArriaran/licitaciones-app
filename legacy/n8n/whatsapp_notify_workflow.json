@@ -1,0 +1,171 @@
+{
+  "name": "Notificar matches pendientes",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7 * * *"
+            }
+          ]
+        }
+      },
+      "id": "trigger-1",
+      "name": "Cron notificaciones (7am)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select m.id as match_id, p.whatsapp_phone, p.company_name,\n       t.title, t.buyer_name, t.amount, t.enquiry_end\nfrom tender_matches m\njoin mype_profiles p on p.id = m.profile_id\njoin tenders t on t.ocid = m.ocid\nwhere m.notified_at is null and p.status = 'active';",
+        "options": {}
+      },
+      "id": "select-pending-1",
+      "name": "Traer matches pendientes",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        440,
+        300
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "REPLACE_ME",
+          "name": "Supabase Postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node -- \"Armar mensaje WhatsApp\"\n// Input: rows from the \"Traer matches pendientes\" Postgres node\n// (match_id, whatsapp_phone, company_name, title, buyer_name, amount, enquiry_end).\n// Output: one item per row with a ready-to-send Meta Graph API body.\n//\n// NOTE: language.code is \"en\" because that's what got registered when the\n// template was created (see conversation) -- if you recreate the template\n// in Spanish, change this to \"es\" to match.\n\nreturn $input.all().map(({ json: item }) => ({\n  json: {\n    match_id: item.match_id,\n    whatsapp_phone: item.whatsapp_phone,\n    whatsapp_body: {\n      messaging_product: \"whatsapp\",\n      to: item.whatsapp_phone,\n      type: \"template\",\n      template: {\n        name: \"licitacion_nueva\",\n        language: { code: \"en\" },\n        components: [\n          {\n            type: \"body\",\n            parameters: [\n              { type: \"text\", text: String(item.company_name ?? \"\") },\n              { type: \"text\", text: String(item.title ?? \"\") },\n              { type: \"text\", text: String(item.buyer_name ?? \"\") },\n              {\n                type: \"text\",\n                text:\n                  item.amount != null\n                    ? Number(item.amount).toLocaleString(\"es-PE\", {\n                        minimumFractionDigits: 2,\n                        maximumFractionDigits: 2,\n                      })\n                    : \"0.00\",\n              },\n              {\n                type: \"text\",\n                text: item.enquiry_end\n                  ? new Date(item.enquiry_end).toLocaleDateString(\"es-PE\")\n                  : \"por confirmar\",\n              },\n            ],\n          },\n        ],\n      },\n    },\n  },\n}));\n"
+      },
+      "id": "build-message-1",
+      "name": "Armar mensaje WhatsApp",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v22.0/REPLACE_PHONE_NUMBER_ID/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.whatsapp_body }}",
+        "options": {}
+      },
+      "id": "http-send-1",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_ME",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "tender_matches"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "id"
+          ],
+          "value": {
+            "id": "={{ $('Armar mensaje WhatsApp').item.json.match_id }}",
+            "notified_at": "={{ $now.toISO() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "mark-notified-1",
+      "name": "Marcar como notificado",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1100,
+        300
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "REPLACE_ME",
+          "name": "Supabase Postgres"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron notificaciones (7am)": {
+      "main": [
+        [
+          {
+            "node": "Traer matches pendientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer matches pendientes": {
+      "main": [
+        [
+          {
+            "node": "Armar mensaje WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar mensaje WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Marcar como notificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

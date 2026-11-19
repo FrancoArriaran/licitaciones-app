@@ -1,0 +1,46 @@
+# Secrets: never commit. Use .env.local and the hosting providers' secret stores.
+.env
+.env.*
+!.env.example
+*api key*
+*apikey*
+*.pem
+*.key
+
+# Data: raw SEACE files and local databases are reproducible from the source
+data/raw/
+data/*.db
+data/*.db-journal
+
+# Dependencies and builds
+node_modules/
+.pnpm-store/
+.next/
+out/
+dist/
+build/
+.turbo/
+.vercel/
+.trigger/
+coverage/
+playwright-report/
+test-results/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Python prototype
+__pycache__/
+*.py[cod]
+.venv/
+
+# OS / editors / tooling
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+.tmp_render/
+.claude/settings.local.json

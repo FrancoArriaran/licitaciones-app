@@ -1,0 +1,24 @@
+{
+  "name": "@licitaciones/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./shared": "./src/shared/index.ts",
+    "./accounts": "./src/accounts/index.ts",
+    "./alerts": "./src/alerts/index.ts",
+    "./ingestion": "./src/ingestion/index.ts",
+    "./marketing": "./src/marketing/index.ts",
+    "./notifications": "./src/notifications/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@licitaciones/config": "workspace:^"
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "name": "Onboarding - Mapeo de rubro mype",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Registro de nueva empresa",
+        "formDescription": "Cuentanos sobre tu empresa para empezar a recibir licitaciones relevantes.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nombre de la empresa",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "RUC",
+              "requiredField": false
+            },
+            {
+              "fieldLabel": "WhatsApp (con codigo de pais, ej 51987654321)",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Departamentos donde opera (separados por coma, vacio si es nacional)",
+              "requiredField": false
+            },
+            {
+              "fieldLabel": "A que se dedica tu empresa? Que productos o servicios ofrecen?",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Monto minimo que pueden manejar en soles",
+              "fieldType": "number",
+              "requiredField": false
+            },
+            {
+              "fieldLabel": "Monto maximo que pueden manejar en soles",
+              "fieldType": "number",
+              "requiredField": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "form-trigger-1",
+      "name": "Formulario de registro",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        300
+      ],
+      "webhookId": "onboarding-mype-form"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node -- \"Mapear campos del formulario\"\n// The Form Trigger node's output keys depend on the exact field labels as\n// n8n stores them (can vary by version/locale), so instead of hardcoding\n// exact key names, find each field by a substring of its label. This way\n// the rest of the flow (which expects snake_case keys) doesn't break if\n// n8n's internal key format differs from what you'd guess.\n\nconst raw = $input.first().json;\n\nfunction findField(substrings) {\n  for (const [key, value] of Object.entries(raw)) {\n    const k = key.toLowerCase();\n    if (substrings.some((s) => k.includes(s))) return value;\n  }\n  return null;\n}\n\nreturn [{\n  json: {\n    company_name: findField([\"nombre de la empresa\", \"company_name\"]),\n    ruc: findField([\"ruc\"]),\n    whatsapp_phone: findField([\"whatsapp\"]),\n    departments: findField([\"departamento\"]) || \"\",\n    business_description: findField([\"dedica\", \"ofrecen\", \"business_description\"]),\n    min_amount: findField([\"minimo\", \"min_amount\"]),\n    max_amount: findField([\"maximo\", \"max_amount\"]),\n  },\n}];\n"
+      },
+      "id": "map-form-1",
+      "name": "Mapear campos del formulario",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node -- \"Armar prompt LLM\"\n// Input: one item per form submission, with fields company_name, ruc,\n// whatsapp_phone, departments, business_description, min_amount, max_amount\n// (as produced by the n8n Form Trigger node).\n// Output: same fields plus a `prompt` field ready for the OpenAI node.\n\nconst CATALOG = `7214 - Servicios de mantenimiento de pistas y carreteras\n1510 - Diesel\n8110 - Ingeniería arquitectónica\n7212 - Servicios de construcción de escuelas\n3011 - Cemento\n8013 - Alquiler de instalaciones comerciales o industriales\n7215 - Servicios de construcción de campos deportivos interiores\n9210 - Servicios de vigilancia\n8010 - Administración o planificación de proyectos\n5013 - Leche o productos de mantequilla estables sin refrigerar\n9111 - Servicios de cocina o preparación de comidas\n7710 - Servicios de control de calidad ambiental\n8312 - Servicios relacionados con Internet\n7811 - Alquiler de vehículos\n7611 - Servicios de limpieza de edificios\n5022 - Granos de cereal\n7810 - Servicios de transporte regional o nacional en camión\n5019 - Papas fritas en hojuelas y al hilo, mix de bocaditos o galletas saladas\n2510 - Camiones ligeros o vehículos de utilidad deportiva\n3012 - Asfalto\n8014 - Gestión de eventos\n1111 - Grava\n3010 - Varillas de hierro\n8111 - Servicio de licencias para software de computadoras\n9315 - Gestión de inversiones públicas o presupuestarias\n8311 - Servicios de telefonía móvil\n7711 - Servicios de descontaminación ambiental\n8210 - Publicidad en Internet\n8212 - Impresión tipográfica o serigrafía\n8516 - Mantenimiento o reparación de bienes de equipo médico\n7818 - Reparación y mantenimiento de camión ligero automotriz\n7315 - Servicio de reparación y mantenimiento de equipo eléctrico\n8114 - Servicio de inspección de instalaciones sanitarias o alcantarillado\n5012 - Pescado estable sin refrigerar\n4111 - Accesorios o suministros de analizadores de banco de sangre\n7612 - Disposición final para desechos peligrosos\n1511 - Gas de petróleo licuefactado\n7210 - Reparación o mantenimiento del sistema de plomería\n3013 - Ladrillos de cerámica\n8411 - Servicio de contabilidad de inventarios\n5310 - Uniformes\n4017 - Tubería comercial de PVC\n8011 - Desarrollo de gestión\n8116 - Servicio de arrendamiento o alquiler de plataforma o equipo de comunicación de datos\n1010 - Ganado vacuno\n8610 - Desarrollo de fuerza de trabajo del sector administrativo\n2611 - Generadores diesel\n5512 - Tarjetas o carnets de identificación o productos similares\n4220 - Unidades de ecografía o ecografía de pulso o doppler o ultrasonido médico para uso diagnóstico general\n8310 - Servicios de transmisión de energía eléctrica\n7814 - Servicios de expedición de carga\n9012 - Agencias de viajes\n8016 - Servicios de oficina\n8512 - Servicios de laboratorios de radiografías\n4321 - Servidor de computadora\n1015 - Semillas o plántulas de césped\n4227 - Cilindros de gas médicos o dispositivos relacionados\n8510 - Servicio para administrar consultorios médicos\n5011 - Pollo mínimamente procesado sin aditivos\n9011 - Hoteles\n8012 - Servicios de investigación legal\n8413 - Seguro de vida\n5015 - Aceites comestibles vegetales o de plantas\n4010 - Aires acondicionados y accesorios\n4222 - Kits o accesorios de bombas de infusión\n1012 - Alimentación compuesta\n2411 - Bolsas de plástico\n8115 - Levantamiento del terreno\n5510 - Publicaciones periodicas\n2517 - Neumáticos para camiones pesados\n1235 - Sales metálicas inorgánicas\n2410 - Compactador estacionario para basura\n2110 - Trituradoras de martillo\n2711 - Segadora de césped\n4710 - Digestores de lodos o aguas residuales\n1112 - Madera tornillo\n3026 - Lámina de acero corrugado\n7017 - Servicios de administración de sistemas de riego\n7610 - Servicios de desinfección o deodorización\n8412 - Servicios de custodia de valores\n9314 - Servicios de seguridad o salud ocupacional\n9510 - Granja\n2210 - Retroexcavadoras\n1214 - Cloro (Cl)\n4223 - Fórmulas suplementarias de adulto para uso general\n5020 - Agua\n9512 - Parque\n8612 - Programas de postgrado\n4213 - Uniformes para el personal médico\n2513 - Aviones objetivo o de reconocimiento\n4218 - Unidades o accesorios de signos vitales multiparámetros\n5016 - Azúcares naturales o productos edulcorantes\n7011 - Servicios de gestión o mantenimiento de parques\n5311 - Zapatos para caballero\n3017 - Puertas de madera\n1512 - Aceite de motor\n3912 - Fuente de energía ininterrumpida UPS\n2612 - Cable de cobre\n5119 - Electrolitos de cloruro de sodio\n4323 - Software de protección antivirus y de seguridad de transacciones\n4110 - Concentradores de vacío o centrífugos\n8414 - Proveedores de servicios de tarjetas de crédito\n1017 - Mezclas Nitrógeno Fósforo Potasio\n4322 - Equipo de acceso satelital\n5199 - Medicamentos y productos farmacéuticos\n5612 - Escritorios para estudiantes\n1411 - Formularios o cuestionarios comerciales\n7211 - Servicios de remodelación de dormitorios colectivos\n3015 - Techado prearmado\n8213 - Servicios de producción de videos\n8410 - Asistencia financiera\n4618 - Botas de seguridad\n4229 - Accesorios de depósito de autotransfusión\n7015 - Servicios de administración forestal\n5120 - Gamma IGG o immunoglobulina\n1019 - Insecticidas\n4016 - Filtros de aceite\n7813 - Almacenamiento de muebles\n8515 - Servicios de análisis de alimentos\n8614 - Servicios de biblioteca o documentación\n3016 - Pisos de caucho\n5610 - Escritorios\n9313 - Servicios de suministro de alimentos\n4219 - Camas de cuidado del paciente o accesorios de uso general\n4912 - Carpas\n5212 - Frazadas\n4810 - Molinos de alimentos de uso comercial\n2312 - Maquinaria para bordados\n7314 - Servicios de costura industrial\n1310 - Caucho procesado y sintético\n4215 - Unidades de curación de laboratorio dental\n4216 - Soluciones para diálisis peritoneal\n4228 - Esterilizadores o autoclaves de vapor\n5313 - Productos para la protección contra el sol\n7013 - Análisis de fertilidad del suelo\n7318 - Servicios de fresado químico\n1216 - Aditivo de concreto\n5113 - Albúmina humana\n5312 - Mochilas\n4214 - Jeringas médicas con aguja\n4224 - Dispositivos prostéticos de la extremidad inferior\n7316 - Servicios de fabricación de aeronaves o naves espaciales\n2610 - Motor fuera de borda a gasolina\n4015 - Bombas sumergibles\n5216 - Televisores\n7299 - Servicios de Construcción y Mantenimiento\n7899 - Servicios de Transporte, Almacenaje y Correo\n3121 - Pinturas al esmalte\n4617 - Grabadoras de sonido o video de vigilancia\n7712 - Servicios de tratamiento de aguas superficiales\n1116 - Tejidos de lana de ligamento de sarga\n2613 - Conmutadores de control de carga de subestación\n5114 - Valproato sódico\n1013 - Jaulas o sus accesorios\n1219 - Solventes activos\n4512 - Videocámaras o cámaras de video digitales\n5118 - Insulina\n8017 - Servicio de asesoría y relaciones con los medios de comunicación\n4713 - Productos de lavandería (Cloro, Detergente, Suavizante)\n7812 - Carga y descarga de mercancías\n3018 - Inodoros\n5042 - Lentejas secas\n6014 - Juegos educativos\n5611 - Asientos de auditorio, estadio o de uso especial\n3115 - Cable de acero no eléctrico\n3910 - Lámpara cialítica de cirugía que no produce sombra\n4014 - Mangueras especiales\n2511 - Barco de personal de gas o petróleo\n3116 - Gavión\n8613 - Servicio de entrenamiento ejecutivo\n2519 - Sistemas de ensayo o mantenimiento de apoyo terrestre\n4212 - Productos formadores de sangre o sangre para uso veterinario\n7014 - Servicios de secadoras de granos\n7110 - Servicios de voladura de mina\n4410 - Tóner para impresora o fax\n5018 - Pan fresco\n9212 - Servicios de vigilantes\n1113 - Semen\n3911 - Iluminación para pistas y carreteras\n4231 - Apósitos de película transparente\n4511 - Sistemas de videoconferencia\n5111 - Trastuzumab\n8211 - Servicios de redacción de manuales\n8215 - Servicios de escultores\n2413 - Congeladores verticales\n3022 - Estructuras Permanentes\n5121 - Iopamidol\n5214 - Moledoras de café domésticas\n7116 - Servicios de base costera\n6012 - Carteles\n8214 - Servicios de edición de gráficos o diseños\n7312 - Servicios de corte de metales\n1016 - Cacaos\n3210 - Circuito integrado de procesador de video o medios de comunicación\n4217 - Desfibriladores externos automatizados (DEA) o paletas rígidas\n4411 - Organizadores o cajas de almacenamiento de archivos\n7115 - Backup y almacenamiento de datos\n4112 - Tubos de ensayo multipropósito o generales\n4232 - Prótesis para hemiartroplastía de cadera de una pieza\n4619 - Extintores\n4712 - Bolsas de basura\n5117 - Magaldrato\n5147 - Gluconato de clorhexidina\n2012 - Sistemas de topografía\n4018 - Sistema de tuberías de plástico PAD\n5110 - Amoxicilina\n9513 - Oficina de emplazamiento\n1115 - Hebras de lana\n2412 - Sacos para empaquetado\n3120 - Adhesivos químicos\n4225 - Aparatos de terapia ultrasónica o suministros\n4320 - Unidades de discos duros\n4910 - Medallas\n6010 - Materiales de apoyo de la unidad temática\n2315 - Maquinaria de formar, rellenar o sellar\n4924 - Toboganes para parques infantiles\n5050 - Suplemento multivitaminico\n5115 - Bromhidrato de escopolamina\n7010 - Servicios de investigación o experimentación pesquera\n3126 - Cubiertas y cajas metálicas\n3215 - Caja de distribución eléctrica para sistema de control\n8015 - Servicios de información comercial\n9317 - Procedimientos o políticas de comercio mundial\n9413 - Servicios no gubernamentales de asistencia técnica\n1011 - Tazones y equipos para comida de animales domésticos\n2318 - Maquinaria para la elaboración de alimentos\n3019 - Caseta de obra\n4811 - Máquinas dispensadoras de productos en envases pequeños o snacks\n5124 - Calamina/fenol/óxido de zinc\n5137 - Buprenorfina\n5141 - Alteplasa\n5614 - Bol de metal\n7012 - Nutrición de animales\n8611 - Enseñanza de idiomas extranjeros por inmersión\n2316 - Calderos de fundición\n4230 - Modelos anatómicos humanos para educación o capacitación médica\n4616 - Señales de trafico (vallas, anuncios)\n5138 - Acetaminofen\n2111 - Redes para pesca comercial\n2310 - Maquinaria para trabajar madera, piedra, cerámica y similares\n2327 - Máquina de Soldadura Ultrasónica por fusión\n4610 - Municiones para defensa u orden público\n4711 - Lavadoras tipo lavandería\n5010 - Nueces y semillas enteras\n5213 - Cortinas\n6013 - Trompetas\n7016 - Servicios de manejo de ecosistemas marinos\n7112 - Servicios de mantenimiento de tubos del yacimiento petrolero\n9310 - Servicios de estadistas\n2014 - Tanque colector de plástico\n2414 - Sellos de seguridad o a prueba de entremetido\n2712 - Prensa hidráulica industrial\n4319 - Teléfonos móviles\n4412 - Bolígrafos\n4615 - Barreras\n5040 - Cebollas rojas\n5116 - Poractant alfa\n5144 - Gadolinio\n5613 - Canastas de productos\n8112 - Análisis macroeconómico\n9014 - Eventos deportivos profesionales patrocinados por la empresa\n9514 - Garita de vigilancia\n2324 - Máquina de aserrar y trocear\n2518 - Remolques de plataforma\n3140 - Juegos de juntas troqueladas\n3141 - Sello mecánico de fuelle\n4920 - Máquinas de ejercicios múltiples\n5112 - Losartán potásico\n7613 - Limpieza de derrames de sustancias toxicas\n2011 - Equipo de perforación de pozos de agua\n2311 - Maquinaria para destilación de crudo\n2314 - Equipo para talleres de trabajo en cuero\n2320 - Equipo de secado industrial\n2713 - Juego de herramientas neumáticas\n3118 - Prensaestopas\n4916 - Balones de fútbol\n4922 - Colchonetas o almohadillas deportivas\n5127 - Remifentanilo\n5128 - Ceftazidima\n7311 - Servicios de fabricación de muebles\n2516 - Bicicletas\n2520 - Sistemas de extinción o de Control de incendios de aeronaves\n3014 - Ladrillos aislantes térmicos\n3117 - Rodamientos de bolas\n3125 - Actuadores eléctricos\n3212 - Inversores\n5017 - Especias o extractos\n5030 - Naranjas valencia\n5126 - Tamsulosina\n5134 - Aciclovir o aciclovir\n5142 - Budesonida\n5511 - Libros en cinta o disco compacto\n7111 - Servicios de video de fondo de pozo del registro de producción\n72 - Servicios de construcción y mantenimiento de instalaciones y edificios\n7317 - Servicios de fabricación de equipos fotográficos u ópticos\n78 - Servicios de transporte, almacenamiento y correspondencia\n9211 - Defensa civil\n9312 - Servicios de terceros en las negociaciones o demandas territoriales\n9316 - Sistemas tributarios\n1311 - Polietileno de baja densidad lineal\n2010 - Cribas\n2325 - Troquel para estampado\n3024 - Tabla base para tribuna y accesorios\n3119 - Cuentas de vidrio\n3913 - Accesorio de conducto eléctrico\n4119 - Procesador de tejidos automatizado\n4221 - Audifono para personas con problemas auditivos\n4226 - Transportadores de cadáveres\n4514 - Fijador\n5129 - Aripiprazol\n5130 - Posaconazol\n5140 - Olanzapina\n5143 - Atomoxetina\n5146 - Condroitina/glucosamina/hialuronato\n5215 - Cuchillos panaderos\n9010 - Servicios de reparto de comidas y bebidas\n9015 - Servicio de asistencia personal\n9299 - Servicios de Defensa Nacional, Orden Público y Seguridad\n9511 - Calle o avenida o carretera o bulevar\n1412 - Papel de seda Kraft\n2313 - Alisadoras de ruedas de esmerilar\n2322 - Aturdidor\n2323 - Rodillo de fijación\n2330 - Equipo para montaje de terminales y corte de cables y alambres\n3137 - Ladrillos moldeados\n4510 - Consumibles para impresión offset\n4622 - Dispositivo antimanipulación de minas\n4914 - Instrumentos o accesorios para buceo\n4921 - Equipos de orientación\n5133 - Clorpromazina\n5135 - Estradiol/hidroxiprogesterona\n5145 - Albendazol\n7713 - Servicios de control de ruidos\n8113 - Análisis multivariado\n8526 - Diagnóstico de Sobrecarga de líquidos\n1014 - Sillas de montar\n1020 - Rosal vivo fragancia púrpura\n1021 - Retama viva escocesa amarilla\n1031 - Azucena agua fresca cortada\n1110 - Carbón activado\n1213 - Bengalas\n1217 - Colorantes fdc seguros para alimentos, fármacos o cosméticos\n1218 - Aceites sintéticos\n2328 - Máquina de calefacción por inducción\n2614 - Plomo para blindaje contra la radiación\n3128 - Componentes laminados compuestos\n3133 - Conjuntos estructurales de latón con acabado ligado\n3211 - Transistor bipolar o de radiofrecuencia bipolar\n3213 - Soportes o zócalos de circuito integrado\n4099 - Sistemas, Equipos y Componentes de Distribución y Acondicionamiento\n4120 - Ensayo de endotoxinas\n4614 - Lanzadores de cohetes\n4812 - Ruletas\n4917 - Barras de equilibrio para gimnasia\n5038 - Purés de aceituna sevillano\n5139 - Albuterol\n5210 - Alfombras sintéticas\n5410 - Pulseras\n9410 - Asociaciones de abogados\n9412 - Servicios de promotores o gestores de clubes deportivos\n1034 - Ramo de peonia, clavel y rosa frescas cortadas\n1050 - Acacia púrpura fresca cortada\n1114 - Desperdicios o restos de caucho\n2013 - Arenas de fracturamiento cubiertas de resina\n2319 - Mezcladora de arena\n2321 - Sistema de marcación de panel de circuito impreso\n2515 - Estructuras de naves espaciales\n3122 - Extractos inorgánicos para curtidos\n3123 - Metal precioso en barra mecanizada\n3124 - Bóvedas de policarbonato moldeado\n3131 - Conjuntos de tubería de acero al carbono de soldadura sónica\n3136 - Conjuntos de placas de aluminio soldados o soldados en fuerte\n4118 - Sistema de prueba inmunológica de autoanticuerpos contra la tiroides\n4513 - Cintas de video en blanco\n4611 - Granadas\n50 - Alimentos y bebidas para consumo humano\n5043 - Arvejas orgánicas secas de jardín\n5131 - Bosentan\n5132 - Ciprofibrato\n5314 - Agujas de crochet\n6011 - Botones decorativos\n7113 - Servicios de bombeo de fondo de pozo\n7310 - Servicios de fabricación de plásticos, resinas o fibras\n8511 - Servicios de control o prevención de enfermedades coronarias\n8513 - Servicios de investigación genética\n8517 - Excavación de tumbas\n90 - Servicios de viaje, alimentación, alojamiento y entretenimiento\n9013 - Conciertos\n9110 - Alquiler de disfraces`;\n\nconst item = $input.first().json;\n\nconst prompt = `Eres un clasificador que mapea la descripcion de una pequena empresa peruana a categorias UNSPSC (a nivel de familia, 4 digitos) usadas en licitaciones publicas del Peru.\n\nDescripcion de la empresa:\n\"\"\"\n${item.business_description}\n\"\"\"\n\nElige entre 1 y 4 familias UNSPSC de la siguiente lista (formato: codigo - descripcion) que mejor representen lo que esta empresa podria ofertar en una licitacion publica. Solo usa codigos que aparecen en la lista, no inventes ninguno.\n\n${CATALOG}\n\nResponde UNICAMENTE con un JSON valido, sin texto adicional, con este formato exacto:\n{\"families\": [\"CODIGO1\", \"CODIGO2\"], \"reasoning\": \"explicacion breve en espanol\"}`;\n\nreturn [{\n  json: {\n    ...item,\n    prompt,\n  },\n}];\n"
+      },
+      "id": "build-prompt-1",
+      "name": "Armar prompt LLM",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "text",
+        "operation": "message",
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "messages": {
+          "values": [
+            {
+              "role": "user",
+              "content": "={{ $json.prompt }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "openai-1",
+      "name": "Clasificar rubro (OpenAI)",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        880,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "REPLACE_ME",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node -- \"Parsear respuesta LLM\"\n// Input: one item with the OpenAI node's output (message text) plus the\n// original form fields (company_name, ruc, whatsapp_phone, departments,\n// business_description, min_amount, max_amount) passed through from before.\n// Output: one item ready for the Postgres \"Insertar mype_profiles\" node.\n\nconst item = $input.first().json;\n\n// The OpenAI node (Message a Model) puts the model's reply text here;\n// adjust this path if your n8n version names the field differently\n// (check the node's output panel -- look for \"content\" or \"text\").\nconst raw = item.message?.content ?? item.content ?? item.text ?? \"\";\n\nconst match = raw.match(/\\{[\\s\\S]*\\}/);\nif (!match) {\n  throw new Error(\"No se encontro JSON en la respuesta del LLM: \" + raw);\n}\n\nconst parsed = JSON.parse(match[0]);\nconst families = Array.isArray(parsed.families) ? parsed.families : [];\n\nconst departments = (item.departments || \"\")\n  .split(\",\")\n  .map((d) => d.trim().toUpperCase())\n  .filter(Boolean);\n\nreturn [{\n  json: {\n    company_name: item.company_name,\n    ruc: item.ruc,\n    whatsapp_phone: item.whatsapp_phone,\n    departments, // plain JS array -- the Postgres node serializes this correctly for a TEXT[] column\n    business_description: item.business_description,\n    unspsc_families: families, // plain JS array, same reason\n    mapping_reasoning: parsed.reasoning || null,\n    min_amount: item.min_amount || null,\n    max_amount: item.max_amount || null,\n    status: \"pending_review\",\n  },\n}];\n"
+      },
+      "id": "parse-response-1",
+      "name": "Parsear respuesta LLM",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "mype_profiles"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "company_name": "={{ $json.company_name }}",
+            "ruc": "={{ $json.ruc }}",
+            "whatsapp_phone": "={{ $json.whatsapp_phone }}",
+            "departments": "={{ $json.departments }}",
+            "business_description": "={{ $json.business_description }}",
+            "unspsc_families": "={{ $json.unspsc_families }}",
+            "mapping_reasoning": "={{ $json.mapping_reasoning }}",
+            "min_amount": "={{ $json.min_amount }}",
+            "max_amount": "={{ $json.max_amount }}",
+            "status": "={{ $json.status }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "insert-profile-1",
+      "name": "Insertar mype_profiles",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1320,
+        300
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "REPLACE_ME",
+          "name": "Supabase Postgres"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Formulario de registro": {
+      "main": [
+        [
+          {
+            "node": "Mapear campos del formulario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear campos del formulario": {
+      "main": [
+        [
+          {
+            "node": "Armar prompt LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar prompt LLM": {
+      "main": [
+        [
+          {
+            "node": "Clasificar rubro (OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clasificar rubro (OpenAI)": {
+      "main": [
+        [
+          {
+            "node": "Parsear respuesta LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear respuesta LLM": {
+      "main": [
+        [
+          {
+            "node": "Insertar mype_profiles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

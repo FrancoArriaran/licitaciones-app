@@ -1,0 +1,26 @@
+<!-- Links go to /auth/confirm (server-side token verification), not the default
+     implicit-flow URL, so the session is set in cookies for the Next.js app. -->
+<div style="font-family: Arial, Helvetica, sans-serif; max-width: 520px; color: #1d2321">
+  <h2 style="margin: 0 0 16px">Te damos la bienvenida a Licitaciones</h2>
+  <p>
+    Tu empresa ya tiene una cuenta. Crea tu contraseña para empezar a recibir las licitaciones del
+    Estado que encajan con tu negocio.
+  </p>
+  <p style="margin: 24px 0">
+    <a
+      href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=invite&next=/bienvenida"
+      style="
+        background: #1f5f4a;
+        color: #ffffff;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+      "
+      >Crear mi contraseña</a
+    >
+  </p>
+  <p style="color: #5f6b67; font-size: 13px">
+    El enlace vence en 24 horas. Si no esperabas este correo, puedes ignorarlo.
+  </p>
+</div>

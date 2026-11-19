@@ -1,0 +1,21 @@
+<div style="font-family: Arial, Helvetica, sans-serif; max-width: 520px; color: #1d2321">
+  <h2 style="margin: 0 0 16px">Restablece tu contraseña</h2>
+  <p>Recibimos una solicitud para cambiar la contraseña de tu cuenta en Licitaciones.</p>
+  <p style="margin: 24px 0">
+    <a
+      href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/nueva-contrasena"
+      style="
+        background: #1f5f4a;
+        color: #ffffff;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+      "
+      >Crear una nueva contraseña</a
+    >
+  </p>
+  <p style="color: #5f6b67; font-size: 13px">
+    Si no la pediste, ignora este correo: tu contraseña no cambia.
+  </p>
+</div>

@@ -1,0 +1,22 @@
+{
+  "name": "@licitaciones/jobs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "tsx src/sync-tenders.ts",
+    "notify": "tsx src/send-whatsapp-alerts.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@licitaciones/core": "workspace:^",
+    "@licitaciones/infra": "workspace:^",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@licitaciones/config": "workspace:^",
+    "@types/node": "22",
+    "tsx": "^4.23.15"
+  }
+}

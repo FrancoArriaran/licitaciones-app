@@ -1,0 +1,113 @@
+/*
+ * Design tokens. Concept: the SEACE "ficha" — official-document seriousness on cool
+ * paper. Source Serif 4 for headlines (gazette tone), Public Sans for everything else
+ * (a typeface made for government interfaces). One institutional green for actions,
+ * amber for deadlines, and a seal red used once, on the price stamp.
+ * Components use these tokens through Tailwind utilities (bg-surface, text-muted...).
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-ring: var(--ring);
+  --color-seal: var(--seal);
+
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-source-serif), ui-serif, Georgia, serif;
+}
+
+:root {
+  --background: #f4f6f4;
+  --surface: #ffffff;
+  --surface-muted: #eef2f0;
+  --foreground: #14201b;
+  --muted: #56665f;
+  --border: #d9e1dd;
+  --primary: #1d5c47;
+  --primary-hover: #164a39;
+  --primary-foreground: #ffffff;
+  --primary-soft: #e3efe9;
+  --success: #24704a;
+  --success-soft: #e2f2e9;
+  --warning: #9a5b0f;
+  --warning-soft: #fbf0dc;
+  --danger: #b42318;
+  --danger-soft: #fdeceb;
+  --info: #2c5b8a;
+  --info-soft: #e6eef7;
+  --ring: #2f8a69;
+  --seal: #a12f2f;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0e1412;
+    --surface: #151d1a;
+    --surface-muted: #1b2522;
+    --foreground: #e6ede9;
+    --muted: #97a8a0;
+    --border: #283430;
+    --primary: #5bbf97;
+    --primary-hover: #74cfaa;
+    --primary-foreground: #0a1310;
+    --primary-soft: #1b2e27;
+    --success: #6fcf98;
+    --success-soft: #16291f;
+    --warning: #e3b45c;
+    --warning-soft: #2c2414;
+    --danger: #f2877d;
+    --danger-soft: #331b19;
+    --info: #8ab6e3;
+    --info-soft: #182434;
+    --ring: #5bbf97;
+    --seal: #e07a6f;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}

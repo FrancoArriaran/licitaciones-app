@@ -1,0 +1,33 @@
+# Daily SEACE ingestion. Replaces the n8n workflow "SEACE - Sincronizacion diaria".
+# See docs/JOBS.md.
+name: Sincronizar SEACE
+
+on:
+  schedule:
+    - cron: "0 10 * * *" # 05:00 in Lima (UTC-5 all year)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-tenders
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Download, upsert and match
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --filter "@licitaciones/jobs..."
+      - run: pnpm jobs:sync
