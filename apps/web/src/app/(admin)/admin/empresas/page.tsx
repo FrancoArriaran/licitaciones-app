@@ -33,7 +33,7 @@ export default async function OrganizationsPage() {
       {organizations.length === 0 ? (
         <EmptyState
           title="Todavía no hay empresas"
-          description="Crea la primera cuando cierres un trato o quieras abrir una prueba. El responsable recibirá una invitación por correo."
+          description="Crea la primera cuando cierres un trato o quieras abrir una prueba. Al crearla obtendrás un enlace de acceso para su responsable, para copiar o enviar por WhatsApp."
           action={newButton}
         />
       ) : (

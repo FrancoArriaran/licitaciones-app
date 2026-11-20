@@ -21,7 +21,8 @@ export default async function NewOrganizationPage() {
           Nueva empresa
         </h1>
         <p className="text-muted text-sm">
-          Se crea con su plan y vigencia, y el responsable recibe una invitación por correo.
+          Se crea con su plan y vigencia. Al guardar verás un enlace de acceso para el responsable:
+          cópialo o envíaselo por WhatsApp.
         </p>
       </div>
       <Card className="p-6">
