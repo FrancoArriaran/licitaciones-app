@@ -177,7 +177,7 @@ Con postulaciones, cobranzas y documentos la plataforma guarda **datos privados 
 - **Permiso de finanzas**: cobranzas y pagos solo los ven `owner`, `admin` y los miembros con el permiso `finance`. Las postulaciones (incluido el precio ofertado) las ve todo el equipo, porque todo el equipo las prepara. Se aplica en RLS, no solo en la interfaz.
 - **Cuenta vencida = solo lectura**: con la suscripción vencida se puede ver y exportar todo, pero no crear ni modificar (las políticas de escritura exigen `has_active_subscription()`).
 - **Auditoría**: cada cambio en postulaciones y cobranzas queda en su línea de tiempo (`bid_events`, eventos de cobranza) con quién y cuándo. Es historial para el cliente y auditoría para nosotros.
-- **Respaldo**: Supabase Pro con restauración a un punto en el tiempo. Ya no es opcional cuando hay datos que el cliente no puede volver a generar.
+- **Respaldo**: Supabase Pro (respaldos diarios con 7 días de retención). Con clientes pagando, sumar el complemento de restauración a un punto en el tiempo. Ya no es opcional cuando hay datos que el cliente no puede volver a generar.
 - **IA y privacidad**: a la IA solo se envía lo necesario para cada tarea (agregados antes que filas). Proveedor con retención cero. Los términos y la política de privacidad lo declaran (Ley 29733).
 - **Derechos del titular**: exportar todos los datos de una organización y borrarlos al terminar el contrato.
 
