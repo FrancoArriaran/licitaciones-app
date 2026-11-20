@@ -18,6 +18,6 @@
   },
   "devDependencies": {
     "@licitaciones/config": "workspace:^",
-    "@types/node": "22"
+    "@types/node": "26"
   }
 }
