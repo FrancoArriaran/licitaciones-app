@@ -43,7 +43,7 @@ jobs:
             echo "::notice::WhatsApp no está configurado (faltan WHATSAPP_ACCESS_TOKEN o WHATSAPP_PHONE_NUMBER_ID). No se envió nada; ver docs/JOBS.md."
           fi
       - if: steps.whatsapp.outputs.ready == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - if: steps.whatsapp.outputs.ready == 'true'
         uses: pnpm/action-setup@v4
       - if: steps.whatsapp.outputs.ready == 'true'
