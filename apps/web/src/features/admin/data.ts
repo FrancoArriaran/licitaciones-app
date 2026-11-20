@@ -101,3 +101,76 @@ export async function listLeads(): Promise<LeadRow[]> {
     status: row.status,
   }));
 }
+
+export interface SyncRunView {
+  id: number;
+  period: string;
+  status: string;
+  tenders: number;
+  documents: number;
+  awards: number;
+  errorMessage: string | null;
+  ranAt: Date;
+}
+
+export interface IngestionHealth {
+  runs: SyncRunView[];
+  tenderCount: number;
+  awardCount: number;
+  latestPublication: Date | null;
+  lastSuccessAt: Date | null;
+  /** No successful run in more than STALE_AFTER_HOURS: the daily sync is failing. */
+  stale: boolean;
+}
+
+/** The daily sync runs at 05:00; more than this since the last success means it's failing. */
+const STALE_AFTER_HOURS = 30;
+
+/** What the sync job left in `sync_runs`, plus how much data there is. */
+export async function getIngestionHealth(): Promise<IngestionHealth> {
+  const db = await getDb();
+  const [runs, tenders, awards, latest] = await Promise.all([
+    db
+      .from("sync_runs")
+      .select(
+        "id, year, month, status, tenders_upserted, documents_upserted, awards_upserted, error_message, ran_at",
+      )
+      .order("ran_at", { ascending: false })
+      .limit(40),
+    db.from("tenders").select("ocid", { count: "exact", head: true }),
+    db.from("awards").select("id", { count: "exact", head: true }),
+    db
+      .from("tenders")
+      .select("date_published")
+      .not("date_published", "is", null)
+      .order("date_published", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
+  unwrap("tenders.count", tenders);
+  unwrap("awards.count", awards);
+  const latestRow = unwrap("tenders.latest", latest);
+
+  const runViews = unwrap("sync_runs.list", runs).map((run) => ({
+    id: run.id,
+    period: `${String(run.year)}-${String(run.month).padStart(2, "0")}`,
+    status: run.status,
+    tenders: run.tenders_upserted,
+    documents: run.documents_upserted,
+    awards: run.awards_upserted,
+    errorMessage: run.error_message,
+    ranAt: new Date(run.ran_at),
+  }));
+  const lastSuccessAt = runViews.find((run) => run.status === "ok")?.ranAt ?? null;
+
+  return {
+    runs: runViews,
+    lastSuccessAt,
+    stale:
+      lastSuccessAt === null ||
+      Date.now() - lastSuccessAt.getTime() > STALE_AFTER_HOURS * 3_600_000,
+    tenderCount: tenders.count ?? 0,
+    awardCount: awards.count ?? 0,
+    latestPublication: latestRow?.date_published ? new Date(latestRow.date_published) : null,
+  };
+}

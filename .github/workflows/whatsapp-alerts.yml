@@ -31,11 +31,27 @@ jobs:
       WHATSAPP_ACCESS_TOKEN: ${{ secrets.WHATSAPP_ACCESS_TOKEN }}
       WHATSAPP_PHONE_NUMBER_ID: ${{ secrets.WHATSAPP_PHONE_NUMBER_ID }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      # Until the Meta secrets exist, scheduled runs skip instead of failing every hour.
+      # A dry run only lists, so it never needs them.
+      - name: Check that WhatsApp is configured
+        id: whatsapp
+        run: |
+          if [ -n "$WHATSAPP_ACCESS_TOKEN" ] && [ -n "$WHATSAPP_PHONE_NUMBER_ID" ] || [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::WhatsApp no está configurado (faltan WHATSAPP_ACCESS_TOKEN o WHATSAPP_PHONE_NUMBER_ID). No se envió nada; ver docs/JOBS.md."
+          fi
+      - if: steps.whatsapp.outputs.ready == 'true'
+        uses: actions/checkout@v4
+      - if: steps.whatsapp.outputs.ready == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.whatsapp.outputs.ready == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - run: pnpm install --frozen-lockfile --filter "@licitaciones/jobs..."
-      - run: pnpm jobs:notify ${{ inputs.dry_run && '--dry-run' || '' }}
+      - if: steps.whatsapp.outputs.ready == 'true'
+        run: pnpm install --frozen-lockfile --filter "@licitaciones/jobs..."
+      - if: steps.whatsapp.outputs.ready == 'true'
+        run: pnpm jobs:notify ${{ inputs.dry_run && '--dry-run' || '' }}

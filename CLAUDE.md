@@ -21,7 +21,7 @@ Antes de cambiar código, lee:
 
 ## Estado actual
 
-Fase 0 completa y Fase 1 en marcha: cuentas por invitación (enlaces de un solo uso, sin SMTP), backoffice (planes, leads), alertas (perfiles con sugerencia de rubros por IA, vista previa, canales) e inicio con coincidencias. La ingesta de SEACE y los avisos por WhatsApp son jobs en `apps/jobs` sobre GitHub Actions, que reemplazan a n8n con el mismo resultado (ver docs/JOBS.md). Siguiente: ingesta de adjudicaciones y "última similar" (ARCHITECTURE.md §6.4).
+Fase 0 completa y Fase 1 en marcha: cuentas por invitación (enlaces de un solo uso, sin SMTP), backoffice (planes, leads), alertas (perfiles con sugerencia de rubros por IA, vista previa, canales) e inicio con coincidencias. La ingesta de SEACE y los avisos por WhatsApp son jobs en `apps/jobs` sobre GitHub Actions, que reemplazan a n8n con el mismo resultado (ver docs/JOBS.md). La ingesta guarda también ítems y adjudicaciones; la ficha de oportunidad (`/oportunidades/[ocid]`) muestra la "última contratación similar" (`last_similar_awards()`), y el backoffice tiene el estado de la ingesta (`/admin/ingesta`). Siguiente: plantilla de WhatsApp con la última similar, resumen diario y marcar oportunidades como no relevantes.
 
 ## Gotchas de este repo
 

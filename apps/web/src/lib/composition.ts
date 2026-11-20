@@ -12,10 +12,23 @@ import {
   SaveNotificationSettings,
   SuggestCategories,
 } from "@licitaciones/core/alerts";
+import {
+  AddBidNote,
+  BidDocuments,
+  FollowOpportunity,
+  RemoveBid,
+  UpdateBid,
+} from "@licitaciones/core/bids";
 import { SubmitDemoRequest, UpdateLeadStatus } from "@licitaciones/core/marketing";
 import {
   OpenAiCategorySuggester,
+  randomIds,
   SupabaseAlertProfileRepository,
+  SupabaseBidDocumentRepository,
+  SupabaseBidRepository,
+  SupabaseBidTimeline,
+  SupabaseFileStorage,
+  SupabaseTeamDirectory,
   SupabaseFamilyCatalog,
   SupabaseLeadPipeline,
   SupabaseLeadRepository,
@@ -60,6 +73,25 @@ export async function alertsUseCases() {
     saveNotificationSettings: new SaveNotificationSettings(
       new SupabaseNotificationSettingsRepository(db),
       systemClock,
+    ),
+  };
+}
+
+export async function bidsUseCases() {
+  const db = await getDb();
+  const bids = new SupabaseBidRepository(db);
+  const timeline = new SupabaseBidTimeline(db);
+  return {
+    followOpportunity: new FollowOpportunity(bids, timeline),
+    updateBid: new UpdateBid(bids, timeline, new SupabaseTeamDirectory(db)),
+    addNote: new AddBidNote(bids, timeline),
+    removeBid: new RemoveBid(bids),
+    documents: new BidDocuments(
+      bids,
+      new SupabaseBidDocumentRepository(db),
+      timeline,
+      new SupabaseFileStorage(db),
+      randomIds,
     ),
   };
 }

@@ -1,11 +1,22 @@
-export { SyncTenders, type SyncSummary } from "./application/sync-tenders";
+export { SyncTenders, type SyncOptions, type SyncSummary } from "./application/sync-tenders";
 export {
   normalizeRecordPackage,
+  type AwardItemRow,
+  type AwardRow,
   type DocumentRow,
   type NormalizedBatch,
+  type ParticipantRow,
+  type TenderItemRow,
   type TenderRow,
 } from "./domain/ocds";
-export { periodsToSync, PREVIOUS_MONTH_GRACE_DAYS, type Period } from "./domain/period";
+export {
+  isSamePeriod,
+  monthRange,
+  parsePeriod,
+  periodsToSync,
+  RECENT_MONTHS,
+  type Period,
+} from "./domain/period";
 export type {
   MatchRefresher,
   MonthlyFile,

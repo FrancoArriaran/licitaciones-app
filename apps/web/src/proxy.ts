@@ -6,6 +6,8 @@ import { publicEnv } from "./lib/env";
 const PROTECTED_PREFIXES = [
   "/inicio",
   "/alertas",
+  "/oportunidades",
+  "/postulaciones",
   "/empresa",
   "/admin",
   "/bienvenida",

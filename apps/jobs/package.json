@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "sync": "tsx src/sync-tenders.ts",
+    "backfill": "tsx src/backfill-history.ts",
     "notify": "tsx src/send-whatsapp-alerts.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"

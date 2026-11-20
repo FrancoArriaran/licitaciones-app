@@ -29,19 +29,20 @@ Plataforma B2B que avisa cada mañana a empresas peruanas de las licitaciones de
 
 ## Comandos
 
-| Comando                    | Qué hace                                                                  |
-| -------------------------- | ------------------------------------------------------------------------- |
-| `pnpm install`             | Instala dependencias y activa los hooks de git                            |
-| `pnpm dev`                 | Levanta la web en http://localhost:3000                                   |
-| `pnpm verify`              | Formato, lint, reglas de capas, tipos y tests (lo mismo que corre el CI)  |
-| `pnpm build`               | Build de producción                                                       |
-| `pnpm admin:create correo` | Crea un administrador interno e imprime su enlace para crear contraseña   |
-| `pnpm db:status`           | Qué migraciones están aplicadas en la base de `SUPABASE_DB_URL`           |
-| `pnpm db:push`             | Aplica las migraciones pendientes (pide confirmación)                     |
-| `pnpm db:types:dev`        | Regenera los tipos de TypeScript desde esa base                           |
-| `pnpm db:test`             | Tests pgTAP de RLS (requiere Docker; en CI corren siempre)                |
-| `pnpm jobs:sync`           | Corre la sincronización de SEACE contra la base de `apps/jobs/.env.local` |
-| `pnpm jobs:notify`         | Envía los avisos de WhatsApp pendientes (`--dry-run` solo los lista)      |
+| Comando                          | Qué hace                                                                  |
+| -------------------------------- | ------------------------------------------------------------------------- |
+| `pnpm install`                   | Instala dependencias y activa los hooks de git                            |
+| `pnpm dev`                       | Levanta la web en http://localhost:3000                                   |
+| `pnpm verify`                    | Formato, lint, reglas de capas, tipos y tests (lo mismo que corre el CI)  |
+| `pnpm build`                     | Build de producción                                                       |
+| `pnpm admin:create correo`       | Crea un administrador interno e imprime su enlace para crear contraseña   |
+| `pnpm db:status`                 | Qué migraciones están aplicadas en la base de `SUPABASE_DB_URL`           |
+| `pnpm db:push`                   | Aplica las migraciones pendientes (pide confirmación)                     |
+| `pnpm db:types:dev`              | Regenera los tipos de TypeScript desde esa base                           |
+| `pnpm db:test`                   | Tests pgTAP de RLS (requiere Docker; en CI corren siempre)                |
+| `pnpm jobs:sync`                 | Corre la sincronización de SEACE contra la base de `apps/jobs/.env.local` |
+| `pnpm jobs:notify`               | Envía los avisos de WhatsApp pendientes (`--dry-run` solo los lista)      |
+| `pnpm jobs:backfill desde hasta` | Carga meses pasados de SEACE (ej. `2025-11 2026-08`), sin documentos      |
 
 Los comandos `db:*` leen `SUPABASE_DB_URL` de `apps/web/.env.local` y nunca muestran la conexión en pantalla.
 

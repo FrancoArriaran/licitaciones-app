@@ -8,6 +8,7 @@ import { requireMembership, requireUser } from "@/lib/session";
 
 const NAV = [
   { href: "/inicio", label: "Inicio" },
+  { href: "/postulaciones", label: "Postulaciones" },
   { href: "/alertas", label: "Alertas" },
   { href: "/empresa", label: "Mi empresa" },
 ] as const;

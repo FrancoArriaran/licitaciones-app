@@ -23,7 +23,8 @@
     "db:status": "node scripts/supabase-remote.mjs migration list",
     "db:push": "node scripts/supabase-remote.mjs db push",
     "jobs:sync": "pnpm --filter @licitaciones/jobs sync",
-    "jobs:notify": "pnpm --filter @licitaciones/jobs notify"
+    "jobs:notify": "pnpm --filter @licitaciones/jobs notify",
+    "jobs:backfill": "pnpm --filter @licitaciones/jobs backfill"
   },
   "lint-staged": {
     "*.{ts,tsx,js,mjs,cjs}": [

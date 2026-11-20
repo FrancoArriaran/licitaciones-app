@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { formatDateLima, formatPen, formatTenderDescription } from "./format";
+import {
+  formatDateLima,
+  formatDateTimeLima,
+  formatFileSize,
+  formatMoney,
+  formatPen,
+  formatQuantity,
+  formatTenderDescription,
+} from "./format";
 import { isValidRuc, normalizeRuc } from "./ruc";
 import { peruMobileSchema, rucSchema } from "./schemas";
 
@@ -52,5 +60,30 @@ describe("format", () => {
   it("formats dates in Lima time, not UTC", () => {
     // 03:00 UTC on the 18th is still the 17th in Lima (UTC-5).
     expect(formatDateLima(new Date("2026-11-18T03:00:00Z"))).toMatch(/^17 nov 2026$/);
+  });
+});
+
+describe("formatMoney", () => {
+  it("shows soles with S/ and other currencies with their code", () => {
+    expect(formatMoney(45000, "PEN")).toBe(formatPen(45000));
+    expect(formatMoney(45000, null)).toBe(formatPen(45000));
+    expect(formatMoney(1200.5, "USD")).toBe("USD 1,200.5");
+  });
+
+  it("formats quantities with thousands separators", () => {
+    expect(formatQuantity(12923)).toBe("12,923");
+    expect(formatQuantity(2.5)).toBe("2.5");
+  });
+});
+
+describe("formatDateTimeLima and formatFileSize", () => {
+  it("shows the Lima date and time", () => {
+    expect(formatDateTimeLima(new Date("2026-11-19T14:05:00Z"))).toBe("19 nov 2026, 09:05");
+  });
+
+  it("shows sizes in KB or MB", () => {
+    expect(formatFileSize(300)).toBe("1 KB");
+    expect(formatFileSize(850 * 1024)).toBe("850 KB");
+    expect(formatFileSize(2.4 * 1024 * 1024)).toBe("2.4 MB");
   });
 });

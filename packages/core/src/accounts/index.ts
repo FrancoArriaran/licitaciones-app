@@ -25,10 +25,12 @@ export {
 } from "./domain/errors";
 export {
   canCreateOrganizations,
+  canDeleteBids,
   canInviteWithRole,
   canManageMember,
   canManageOrganizationSettings,
   canManageSubscriptions,
+  canWorkOnBids,
 } from "./domain/permissions";
 export {
   hasProductAccess,

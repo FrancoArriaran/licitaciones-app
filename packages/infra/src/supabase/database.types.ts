@@ -63,6 +63,148 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"award_items": {
+                  Row: {
+                    "amount": number | null,"award_id": string,"cubso_code": string | null,"description": string | null,"item_id": string,"ocid": string,"quantity": number | null,"unit_name": string | null,"unspsc_code": string | null,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount"?: number | null,"award_id": string,"cubso_code"?: string | null,"description"?: string | null,"item_id": string,"ocid": string,"quantity"?: number | null,"unit_name"?: string | null,"unspsc_code"?: string | null,"updated_at"?: string
+                  }
+                  Update: {
+                    "amount"?: number | null,"award_id"?: string,"cubso_code"?: string | null,"description"?: string | null,"item_id"?: string,"ocid"?: string,"quantity"?: number | null,"unit_name"?: string | null,"unspsc_code"?: string | null,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "award_items_award_id_fkey"
+      columns: ["award_id"]
+isOneToOne: false
+      referencedRelation: "awards"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "award_items_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "pending_alert_notifications"
+      referencedColumns: ["ocid"]
+    },{
+      foreignKeyName: "award_items_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "tenders"
+      referencedColumns: ["ocid"]
+    }
+                  ]
+                },"awards": {
+                  Row: {
+                    "amount": number | null,"award_date": string | null,"currency": string | null,"id": string,"ocid": string,"supplier_id": string | null,"supplier_name": string | null,"supplier_ruc": string | null,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount"?: number | null,"award_date"?: string | null,"currency"?: string | null,"id": string,"ocid": string,"supplier_id"?: string | null,"supplier_name"?: string | null,"supplier_ruc"?: string | null,"updated_at"?: string
+                  }
+                  Update: {
+                    "amount"?: number | null,"award_date"?: string | null,"currency"?: string | null,"id"?: string,"ocid"?: string,"supplier_id"?: string | null,"supplier_name"?: string | null,"supplier_ruc"?: string | null,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "awards_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "pending_alert_notifications"
+      referencedColumns: ["ocid"]
+    },{
+      foreignKeyName: "awards_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "tenders"
+      referencedColumns: ["ocid"]
+    }
+                  ]
+                },"bid_documents": {
+                  Row: {
+                    "bid_id": string,"content_type": string | null,"created_at": string,"id": string,"name": string,"organization_id": string,"size_bytes": number,"storage_path": string,"uploaded_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "bid_id": string,"content_type"?: string | null,"created_at"?: string,"id"?: string,"name": string,"organization_id": string,"size_bytes": number,"storage_path": string,"uploaded_by"?: string | null
+                  }
+                  Update: {
+                    "bid_id"?: string,"content_type"?: string | null,"created_at"?: string,"id"?: string,"name"?: string,"organization_id"?: string,"size_bytes"?: number,"storage_path"?: string,"uploaded_by"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "bid_documents_bid_id_fkey"
+      columns: ["bid_id"]
+isOneToOne: false
+      referencedRelation: "bids"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "bid_documents_organization_id_fkey"
+      columns: ["organization_id"]
+isOneToOne: false
+      referencedRelation: "organizations"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"bid_events": {
+                  Row: {
+                    "actor_id": string | null,"bid_id": string,"created_at": string,"data": NonNullable<Json>,"id": number,"organization_id": string,"type": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actor_id"?: string | null,"bid_id": string,"created_at"?: string,"data"?: NonNullable<Json>,"id"?: never,"organization_id": string,"type": string
+                  }
+                  Update: {
+                    "actor_id"?: string | null,"bid_id"?: string,"created_at"?: string,"data"?: NonNullable<Json>,"id"?: never,"organization_id"?: string,"type"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "bid_events_bid_id_fkey"
+      columns: ["bid_id"]
+isOneToOne: false
+      referencedRelation: "bids"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "bid_events_organization_id_fkey"
+      columns: ["organization_id"]
+isOneToOne: false
+      referencedRelation: "organizations"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"bids": {
+                  Row: {
+                    "assignee_id": string | null,"awarded_amount": number | null,"created_at": string,"created_by": string | null,"id": string,"lost_reason": string | null,"ocid": string,"offered_amount": number | null,"organization_id": string,"source": string,"status": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "assignee_id"?: string | null,"awarded_amount"?: number | null,"created_at"?: string,"created_by"?: string | null,"id"?: string,"lost_reason"?: string | null,"ocid": string,"offered_amount"?: number | null,"organization_id": string,"source"?: string,"status"?: string,"updated_at"?: string
+                  }
+                  Update: {
+                    "assignee_id"?: string | null,"awarded_amount"?: number | null,"created_at"?: string,"created_by"?: string | null,"id"?: string,"lost_reason"?: string | null,"ocid"?: string,"offered_amount"?: number | null,"organization_id"?: string,"source"?: string,"status"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "bids_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "pending_alert_notifications"
+      referencedColumns: ["ocid"]
+    },{
+      foreignKeyName: "bids_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "tenders"
+      referencedColumns: ["ocid"]
+    },{
+      foreignKeyName: "bids_organization_id_fkey"
+      columns: ["organization_id"]
+isOneToOne: false
+      referencedRelation: "organizations"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"documents": {
                   Row: {
                     "date_published": string | null,"document_type": string | null,"format": string | null,"id": string,"ocid": string,"title": string | null,"updated_at": string,"url": string | null
@@ -227,17 +369,43 @@ isOneToOne: false
                   ]
                 },"sync_runs": {
                   Row: {
-                    "documents_upserted": number,"error_message": string | null,"id": number,"month": number,"ran_at": string,"status": string,"tenders_upserted": number,"year": number
+                    "awards_upserted": number,"documents_upserted": number,"error_message": string | null,"id": number,"month": number,"ran_at": string,"status": string,"tenders_upserted": number,"year": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "documents_upserted": number,"error_message"?: string | null,"id"?: number,"month": number,"ran_at"?: string,"status": string,"tenders_upserted": number,"year": number
+                    "awards_upserted"?: number,"documents_upserted": number,"error_message"?: string | null,"id"?: number,"month": number,"ran_at"?: string,"status": string,"tenders_upserted": number,"year": number
                   }
                   Update: {
-                    "documents_upserted"?: number,"error_message"?: string | null,"id"?: number,"month"?: number,"ran_at"?: string,"status"?: string,"tenders_upserted"?: number,"year"?: number
+                    "awards_upserted"?: number,"documents_upserted"?: number,"error_message"?: string | null,"id"?: number,"month"?: number,"ran_at"?: string,"status"?: string,"tenders_upserted"?: number,"year"?: number
                   }
                   Relationships: [
                     
+                  ]
+                },"tender_items": {
+                  Row: {
+                    "amount": number | null,"cubso_code": string | null,"description": string | null,"item_id": string,"ocid": string,"position": number | null,"quantity": number | null,"status_details": string | null,"unit_name": string | null,"unspsc_code": string | null,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount"?: number | null,"cubso_code"?: string | null,"description"?: string | null,"item_id": string,"ocid": string,"position"?: number | null,"quantity"?: number | null,"status_details"?: string | null,"unit_name"?: string | null,"unspsc_code"?: string | null,"updated_at"?: string
+                  }
+                  Update: {
+                    "amount"?: number | null,"cubso_code"?: string | null,"description"?: string | null,"item_id"?: string,"ocid"?: string,"position"?: number | null,"quantity"?: number | null,"status_details"?: string | null,"unit_name"?: string | null,"unspsc_code"?: string | null,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "tender_items_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "pending_alert_notifications"
+      referencedColumns: ["ocid"]
+    },{
+      foreignKeyName: "tender_items_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "tenders"
+      referencedColumns: ["ocid"]
+    }
                   ]
                 },"tender_matches": {
                   Row: {
@@ -271,16 +439,42 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"tenders": {
+                },"tender_participants": {
                   Row: {
-                    "amount": number | null,"buyer_name": string | null,"buyer_ruc": string | null,"currency": string | null,"date_published": string | null,"department": string | null,"description": string | null,"enquiry_end": string | null,"enquiry_start": string | null,"locality": string | null,"main_category": string | null,"ocid": string,"procurement_method": string | null,"source_release_date": string | null,"tender_id": string | null,"title": string | null,"unspsc_code": string | null,"unspsc_description": string | null,"unspsc_family": string | null,"unspsc_segment": string | null,"updated_at": string
+                    "name": string | null,"ocid": string,"party_id": string,"ruc": string | null,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount"?: number | null,"buyer_name"?: string | null,"buyer_ruc"?: string | null,"currency"?: string | null,"date_published"?: string | null,"department"?: string | null,"description"?: string | null,"enquiry_end"?: string | null,"enquiry_start"?: string | null,"locality"?: string | null,"main_category"?: string | null,"ocid": string,"procurement_method"?: string | null,"source_release_date"?: string | null,"tender_id"?: string | null,"title"?: string | null,"unspsc_code"?: string | null,"unspsc_description"?: string | null,"unspsc_family"?: string | null,"unspsc_segment"?: string | null,"updated_at"?: string
+                    "name"?: string | null,"ocid": string,"party_id": string,"ruc"?: string | null,"updated_at"?: string
                   }
                   Update: {
-                    "amount"?: number | null,"buyer_name"?: string | null,"buyer_ruc"?: string | null,"currency"?: string | null,"date_published"?: string | null,"department"?: string | null,"description"?: string | null,"enquiry_end"?: string | null,"enquiry_start"?: string | null,"locality"?: string | null,"main_category"?: string | null,"ocid"?: string,"procurement_method"?: string | null,"source_release_date"?: string | null,"tender_id"?: string | null,"title"?: string | null,"unspsc_code"?: string | null,"unspsc_description"?: string | null,"unspsc_family"?: string | null,"unspsc_segment"?: string | null,"updated_at"?: string
+                    "name"?: string | null,"ocid"?: string,"party_id"?: string,"ruc"?: string | null,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "tender_participants_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "pending_alert_notifications"
+      referencedColumns: ["ocid"]
+    },{
+      foreignKeyName: "tender_participants_ocid_fkey"
+      columns: ["ocid"]
+isOneToOne: false
+      referencedRelation: "tenders"
+      referencedColumns: ["ocid"]
+    }
+                  ]
+                },"tenders": {
+                  Row: {
+                    "amount": number | null,"buyer_name": string | null,"buyer_ruc": string | null,"currency": string | null,"date_published": string | null,"department": string | null,"description": string | null,"enquiry_end": string | null,"enquiry_start": string | null,"locality": string | null,"main_category": string | null,"number_of_tenderers": number | null,"ocid": string,"procurement_method": string | null,"source_release_date": string | null,"tender_end": string | null,"tender_id": string | null,"title": string | null,"unspsc_code": string | null,"unspsc_description": string | null,"unspsc_family": string | null,"unspsc_segment": string | null,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount"?: number | null,"buyer_name"?: string | null,"buyer_ruc"?: string | null,"currency"?: string | null,"date_published"?: string | null,"department"?: string | null,"description"?: string | null,"enquiry_end"?: string | null,"enquiry_start"?: string | null,"locality"?: string | null,"main_category"?: string | null,"number_of_tenderers"?: number | null,"ocid": string,"procurement_method"?: string | null,"source_release_date"?: string | null,"tender_end"?: string | null,"tender_id"?: string | null,"title"?: string | null,"unspsc_code"?: string | null,"unspsc_description"?: string | null,"unspsc_family"?: string | null,"unspsc_segment"?: string | null,"updated_at"?: string
+                  }
+                  Update: {
+                    "amount"?: number | null,"buyer_name"?: string | null,"buyer_ruc"?: string | null,"currency"?: string | null,"date_published"?: string | null,"department"?: string | null,"description"?: string | null,"enquiry_end"?: string | null,"enquiry_start"?: string | null,"locality"?: string | null,"main_category"?: string | null,"number_of_tenderers"?: number | null,"ocid"?: string,"procurement_method"?: string | null,"source_release_date"?: string | null,"tender_end"?: string | null,"tender_id"?: string | null,"title"?: string | null,"unspsc_code"?: string | null,"unspsc_description"?: string | null,"unspsc_family"?: string | null,"unspsc_segment"?: string | null,"updated_at"?: string
                   }
                   Relationships: [
                     
@@ -327,6 +521,9 @@ isOneToOne: false
               "max_profiles": number,"used": number
             }[]
                            },
+"bid_in_org":
+{ Args: { "bid": string,"org": string }; Returns: boolean
+                           },
 "create_organization":
 { Args: { "p_ends_at": string,"p_max_seats": number,"p_name": string,"p_plan_code": string,"p_ruc": string,"p_starts_at": string,"p_status": string }; Returns: string
                            },
@@ -341,6 +538,11 @@ isOneToOne: false
                            },
 "is_platform_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"last_similar_awards":
+{ Args: { "p_limit"?: number,"p_ocid": string }; Returns: {
+              "amount": number,"award_date": string,"buyer_name": string,"currency": string,"department": string,"item_description": string,"match_level": string,"number_of_tenderers": number,"ocid": string,"quantity": number,"supplier_name": string,"supplier_ruc": string,"tender_description": string,"title": string,"unit_name": string,"unit_price": number
+            }[]
                            },
 "preview_alert_profile":
 { Args: { "p_days"?: number,"p_departments": (string)[],"p_families": (string)[],"p_max_amount": number,"p_min_amount": number }; Returns: {
@@ -357,6 +559,9 @@ isOneToOne: false
 { Args: { "org": string }; Returns: {
               "max_seats": number,"used": number
             }[]
+                           },
+"storage_path_org":
+{ Args: { "path": string }; Returns: string
                            },
 "tender_fits_profile":
 { Args: { "departments": (string)[],"families": (string)[],"max_amount": number,"min_amount": number,"t": Omit<Database["public"]['Tables']["tenders"]['Row'], Database["public"]['Tables']["tenders"]['ComputedFields']> }; Returns: boolean

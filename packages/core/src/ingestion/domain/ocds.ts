@@ -2,9 +2,10 @@ import { z } from "zod";
 
 /**
  * Normalizes SEACE's OCDS record packages (the monthly file of
- * contratacionesabiertas.oece.gob.pe) into rows for `tenders` and `documents`.
+ * contratacionesabiertas.oece.gob.pe) into rows for `tenders`, `documents`,
+ * `tender_items`, `awards` and `award_items`.
  *
- * The rules are a line-by-line port of the n8n "Normalizar tenders" and
+ * Tenders and documents follow a line-by-line port of the n8n "Normalizar tenders" and
  * "Normalizar documents" nodes (legacy/n8n), so the database ends up exactly as
  * n8n left it: empty strings become null, the buyer is the first party with role
  * `procuringEntity` or `buyer`, and the category is the first UNSPSC code found.
@@ -19,6 +20,33 @@ const text = z
   );
 
 const classificationSchema = z.object({ scheme: text, id: text, description: text });
+
+/** Numbers from fields n8n never read: anything unexpected becomes null, never a skipped record. */
+const amount = z
+  .union([z.number(), z.string().regex(/^-?\d+(\.\d+)?$/)])
+  .nullish()
+  .transform((value) => (value === null || value === undefined ? null : Number(value)))
+  .catch(null);
+
+const itemSchema = z.object({
+  id: text.catch(null),
+  position: amount,
+  description: text.catch(null),
+  statusDetails: text.catch(null),
+  classification: z.object({ scheme: text, id: text }).nullish().catch(null),
+  additionalClassifications: z.array(classificationSchema).nullish(),
+  quantity: amount,
+  unit: z.object({ name: text }).nullish().catch(null),
+  totalValue: z.object({ amount }).nullish().catch(null),
+});
+
+const awardSchema = z.object({
+  id: text,
+  date: text,
+  value: z.object({ amount, currency: text }).nullish(),
+  suppliers: z.array(z.object({ id: text, name: text })).nullish(),
+  items: z.array(itemSchema).nullish(),
+});
 
 const partySchema = z.object({
   roles: z.array(z.string()).nullish(),
@@ -50,12 +78,17 @@ const releaseSchema = z.object({
       value: z.object({ amount: z.number().nullish(), currency: text }).nullish(),
       datePublished: text,
       enquiryPeriod: z.object({ startDate: text, endDate: text }).nullish(),
-      items: z
-        .array(z.object({ additionalClassifications: z.array(classificationSchema).nullish() }))
-        .nullish(),
+      items: z.array(itemSchema).nullish(),
       documents: z.array(documentSchema).nullish(),
+      tenderPeriod: z.object({ endDate: text }).nullish().catch(null),
+      numberOfTenderers: amount,
+      tenderers: z
+        .array(z.object({ id: text, name: text }))
+        .nullish()
+        .catch(null),
     })
     .nullish(),
+  awards: z.array(awardSchema).nullish().catch(null),
 });
 
 const packageSchema = z.object({ records: z.array(z.unknown()).nullish() });
@@ -82,6 +115,19 @@ export interface TenderRow {
   unspsc_family: string | null;
   unspsc_description: string | null;
   source_release_date: string | null;
+  /** Not in n8n: how many companies submitted an offer, when SEACE says. */
+  number_of_tenderers: number | null;
+  /** Not in n8n: deadline to submit offers. */
+  tender_end: string | null;
+}
+
+/** A company that submitted an offer. */
+export interface ParticipantRow {
+  ocid: string;
+  party_id: string;
+  /** Null for consortia, which SEACE identifies with an internal id. */
+  ruc: string | null;
+  name: string | null;
 }
 
 export interface DocumentRow {
@@ -94,14 +140,74 @@ export interface DocumentRow {
   date_published: string | null;
 }
 
+export interface TenderItemRow {
+  ocid: string;
+  item_id: string;
+  position: number | null;
+  description: string | null;
+  /** SEACE's 16-digit product code (CUBSO), the most specific one. */
+  cubso_code: string | null;
+  /** 8-digit UNSPSC commodity. */
+  unspsc_code: string | null;
+  quantity: number | null;
+  unit_name: string | null;
+  amount: number | null;
+  status_details: string | null;
+}
+
+export interface AwardRow {
+  id: string;
+  ocid: string;
+  award_date: string | null;
+  amount: number | null;
+  currency: string | null;
+  supplier_id: string | null;
+  supplier_name: string | null;
+  /** Null for consortia, which SEACE identifies with an internal id instead of a RUC. */
+  supplier_ruc: string | null;
+}
+
+export interface AwardItemRow {
+  award_id: string;
+  item_id: string;
+  ocid: string;
+  description: string | null;
+  cubso_code: string | null;
+  unspsc_code: string | null;
+  quantity: number | null;
+  unit_name: string | null;
+  amount: number | null;
+}
+
 export interface NormalizedBatch {
   tenders: TenderRow[];
   documents: DocumentRow[];
+  items: TenderItemRow[];
+  awards: AwardRow[];
+  awardItems: AwardItemRow[];
+  participants: ParticipantRow[];
   /** Records whose shape didn't match OCDS and were left out. */
   skipped: number;
 }
 
 type Release = z.infer<typeof releaseSchema>;
+type Item = z.infer<typeof itemSchema>;
+
+function itemCodes(item: Item) {
+  const cubso = item.classification?.scheme === "CUBSO" ? item.classification.id : null;
+  const unspsc = (item.additionalClassifications ?? []).find((c) => c.scheme === "UNSPSC");
+  return { cubso_code: cubso, unspsc_code: unspsc?.id ?? null };
+}
+
+function rucFromPartyId(id: string | null): string | null {
+  return /^PE-RUC-(\d{11})$/.exec(id ?? "")?.[1] ?? null;
+}
+
+function numberOfTenderers(release: Release): number | null {
+  const tender = release.tender;
+  if (tender?.numberOfTenderers != null) return tender.numberOfTenderers;
+  return tender?.tenderers ? tender.tenderers.length : null;
+}
 
 function buyerDetails(release: Release) {
   let department: string | null = null;
@@ -159,6 +265,8 @@ function toTenderRow(ocid: string, release: Release): TenderRow {
     enquiry_end: tender?.enquiryPeriod?.endDate ?? null,
     ...firstUnspsc(release),
     source_release_date: release.date,
+    number_of_tenderers: numberOfTenderers(release),
+    tender_end: tender?.tenderPeriod?.endDate ?? null,
   };
 }
 
@@ -171,6 +279,10 @@ export function normalizeRecordPackage(file: unknown): NormalizedBatch {
   const records = packageSchema.parse(file).records ?? [];
   const tenders: TenderRow[] = [];
   const documents: DocumentRow[] = [];
+  const items: TenderItemRow[] = [];
+  const awards: AwardRow[] = [];
+  const awardItems: AwardItemRow[] = [];
+  const participants: ParticipantRow[] = [];
   let skipped = 0;
 
   for (const raw of records) {
@@ -196,11 +308,70 @@ export function normalizeRecordPackage(file: unknown): NormalizedBatch {
         date_published: document.datePublished,
       });
     }
+
+    for (const item of release.tender?.items ?? []) {
+      if (!item.id) continue;
+      items.push({
+        ocid,
+        item_id: item.id,
+        position: item.position,
+        description: item.description,
+        ...itemCodes(item),
+        quantity: item.quantity,
+        unit_name: item.unit?.name ?? null,
+        amount: item.totalValue?.amount ?? null,
+        status_details: item.statusDetails,
+      });
+    }
+
+    for (const tenderer of release.tender?.tenderers ?? []) {
+      if (!tenderer.id) continue;
+      participants.push({
+        ocid,
+        party_id: tenderer.id,
+        ruc: rucFromPartyId(tenderer.id),
+        name: tenderer.name,
+      });
+    }
+
+    for (const award of release.awards ?? []) {
+      if (!award.id) continue;
+      const awardId = award.id;
+      // SEACE awards have one supplier (a consortium counts as one).
+      const supplier = award.suppliers?.[0];
+      awards.push({
+        id: awardId,
+        ocid,
+        award_date: award.date,
+        amount: award.value?.amount ?? null,
+        currency: award.value?.currency ?? null,
+        supplier_id: supplier?.id ?? null,
+        supplier_name: supplier?.name ?? null,
+        supplier_ruc: rucFromPartyId(supplier?.id ?? null),
+      });
+      for (const item of award.items ?? []) {
+        if (!item.id) continue;
+        awardItems.push({
+          award_id: awardId,
+          item_id: item.id,
+          ocid,
+          description: item.description,
+          ...itemCodes(item),
+          quantity: item.quantity,
+          unit_name: item.unit?.name ?? null,
+          amount: item.totalValue?.amount ?? null,
+        });
+      }
+    }
   }
 
   return {
     tenders: dedupeBy(tenders, (row) => row.ocid),
     documents: dedupeBy(documents, (row) => row.id),
+    items: dedupeBy(items, (row) => `${row.ocid}|${row.item_id}`),
+    awards: dedupeBy(awards, (row) => row.id),
+    awardItems: dedupeBy(awardItems, (row) => `${row.award_id}|${row.item_id}`),
+    participants: dedupeBy(participants, (row) => `${row.ocid}|${row.party_id}`),
     skipped,
   };
 }

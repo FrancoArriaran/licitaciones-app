@@ -1,4 +1,11 @@
-import type { DocumentRow, TenderRow } from "./domain/ocds";
+import type {
+  AwardItemRow,
+  AwardRow,
+  DocumentRow,
+  ParticipantRow,
+  TenderItemRow,
+  TenderRow,
+} from "./domain/ocds";
 import type { Period } from "./domain/period";
 
 export type MonthlyFile = { published: true; data: unknown } | { published: false };
@@ -13,6 +20,10 @@ export interface ProcurementSource {
 export interface TenderWriter {
   upsertTenders(rows: readonly TenderRow[], updatedAt: Date): Promise<number>;
   upsertDocuments(rows: readonly DocumentRow[], updatedAt: Date): Promise<number>;
+  upsertItems(rows: readonly TenderItemRow[], updatedAt: Date): Promise<number>;
+  upsertAwards(rows: readonly AwardRow[], updatedAt: Date): Promise<number>;
+  upsertAwardItems(rows: readonly AwardItemRow[], updatedAt: Date): Promise<number>;
+  upsertParticipants(rows: readonly ParticipantRow[], updatedAt: Date): Promise<number>;
 }
 
 export interface RefreshedMatches {
@@ -33,6 +44,7 @@ export interface SyncRun {
   status: SyncRunStatus;
   tenders: number;
   documents: number;
+  awards: number;
   errorMessage: string | null;
 }
 

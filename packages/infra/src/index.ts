@@ -9,6 +9,13 @@ export {
   SupabaseFamilyCatalog,
   SupabaseNotificationSettingsRepository,
 } from "./alerts/supabase-alert-repositories";
+export {
+  SupabaseBidDocumentRepository,
+  SupabaseBidRepository,
+  SupabaseBidTimeline,
+  SupabaseTeamDirectory,
+} from "./bids/supabase-bid-repositories";
+export { SupabaseFileStorage } from "./storage/supabase-file-storage";
 export { SeaceProcurementSource } from "./ingestion/seace-procurement-source";
 export {
   SupabaseMatchRefresher,
@@ -24,3 +31,5 @@ export { createServiceRoleClient, unwrap, type DbClient } from "./supabase/clien
 export type { Database } from "./supabase/database.types";
 
 export const systemClock: Clock = { now: () => new Date() };
+
+export const randomIds = { uuid: () => crypto.randomUUID() };

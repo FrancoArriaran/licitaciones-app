@@ -7,6 +7,7 @@
     "./shared": "./src/shared/index.ts",
     "./accounts": "./src/accounts/index.ts",
     "./alerts": "./src/alerts/index.ts",
+    "./bids": "./src/bids/index.ts",
     "./ingestion": "./src/ingestion/index.ts",
     "./marketing": "./src/marketing/index.ts",
     "./notifications": "./src/notifications/index.ts"

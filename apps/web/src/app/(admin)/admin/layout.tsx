@@ -8,6 +8,7 @@ import { requirePlatformAdmin } from "@/lib/session";
 const NAV = [
   { href: "/admin/empresas", label: "Empresas" },
   { href: "/admin/leads", label: "Leads" },
+  { href: "/admin/ingesta", label: "Ingesta" },
 ] as const;
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {

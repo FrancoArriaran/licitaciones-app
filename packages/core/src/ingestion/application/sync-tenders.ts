@@ -1,6 +1,6 @@
 import type { Clock } from "../../shared";
 import { normalizeRecordPackage } from "../domain/ocds";
-import { periodsToSync, type Period } from "../domain/period";
+import { isSamePeriod, periodsToSync, type Period } from "../domain/period";
 import type {
   MatchRefresher,
   ProcurementSource,
@@ -18,10 +18,18 @@ export interface SyncSummary {
   failed: boolean;
 }
 
+export interface SyncOptions {
+  /** Months to load; defaults to the recent ones. Older months are history (backfill). */
+  periods?: readonly Period[];
+}
+
 /**
  * Daily ingestion, replacing the n8n "SEACE - Sincronización diaria" workflow:
- * download the month's file, normalize it, upsert tenders and then their
- * documents, and compute new matches for every profile. Idempotent.
+ * download each month's file, normalize it, upsert tenders with their items,
+ * documents and awards, and compute new matches for every profile. Idempotent.
+ *
+ * Documents (links to the bidding rules) are only kept for recent months: they
+ * matter while a process is open, and history without them takes a third of the space.
  */
 export class SyncTenders {
   constructor(
@@ -32,12 +40,14 @@ export class SyncTenders {
     private readonly clock: Clock,
   ) {}
 
-  async execute(): Promise<SyncSummary> {
+  async execute({ periods }: SyncOptions = {}): Promise<SyncSummary> {
     const now = this.clock.now();
+    const recent = periodsToSync(now);
     const runs: SyncRun[] = [];
 
-    for (const period of periodsToSync(now)) {
-      const run = await this.syncMonth(period, now);
+    for (const period of periods ?? recent) {
+      const withDocuments = recent.some((month) => isSamePeriod(month, period));
+      const run = await this.syncMonth(period, now, withDocuments);
       await this.log.record(run);
       runs.push(run);
     }
@@ -51,31 +61,33 @@ export class SyncTenders {
     };
   }
 
-  private async syncMonth(period: Period, now: Date): Promise<SyncRun> {
+  private async syncMonth(period: Period, now: Date, withDocuments: boolean): Promise<SyncRun> {
+    const empty = { period, tenders: 0, documents: 0, awards: 0 };
     try {
       const file = await this.source.fetchMonth(period);
-      if (!file.published) {
-        return { period, status: "not_published", tenders: 0, documents: 0, errorMessage: null };
-      }
+      if (!file.published) return { ...empty, status: "not_published", errorMessage: null };
 
       const batch = normalizeRecordPackage(file.data);
-      // Tenders first: documents reference them.
+      // Parents before children: everything else references tenders, award items reference awards.
       const tenders = await this.writer.upsertTenders(batch.tenders, now);
-      const documents = await this.writer.upsertDocuments(batch.documents, now);
+      await this.writer.upsertItems(batch.items, now);
+      await this.writer.upsertParticipants(batch.participants, now);
+      const documents = withDocuments ? await this.writer.upsertDocuments(batch.documents, now) : 0;
+      const awards = await this.writer.upsertAwards(batch.awards, now);
+      await this.writer.upsertAwardItems(batch.awardItems, now);
       return {
         period,
         status: "ok",
         tenders,
         documents,
+        awards,
         errorMessage:
           batch.skipped > 0 ? `${batch.skipped} registros con formato inesperado omitidos` : null,
       };
     } catch (error) {
       return {
-        period,
+        ...empty,
         status: "error",
-        tenders: 0,
-        documents: 0,
         errorMessage: error instanceof Error ? error.message : String(error),
       };
     }

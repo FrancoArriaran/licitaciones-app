@@ -20,6 +20,35 @@ export function formatPen(amount: number): string {
   return penFormatter.format(amount).replace(/\s/g, " ");
 }
 
+/** Soles as "S/ 45,000.00"; other currencies with their code ("USD 1,200.5"). */
+export function formatMoney(amount: number, currency: string | null): string {
+  if (!currency || currency === "PEN") return formatPen(amount);
+  return `${currency} ${amount.toLocaleString("es-PE", { maximumFractionDigits: 2 })}`;
+}
+
+/** Quantities as SEACE publishes them, with thousands separators: "12,923". */
+export function formatQuantity(quantity: number): string {
+  return quantity.toLocaleString("es-PE", { maximumFractionDigits: 2 });
+}
+
+const timeFormatter = new Intl.DateTimeFormat("es-PE", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+  timeZone: LIMA_TIME_ZONE,
+});
+
+/** "17 nov 2026, 09:05", in Lima time. */
+export function formatDateTimeLima(date: Date): string {
+  return `${formatDateLima(date)}, ${timeFormatter.format(date)}`;
+}
+
+/** "850 KB", "2.4 MB". */
+export function formatFileSize(bytes: number): string {
+  if (bytes < 1024 * 1024) return `${String(Math.max(1, Math.round(bytes / 1024)))} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 /** "17 nov 2026", always in Lima time regardless of server timezone. */
 export function formatDateLima(date: Date): string {
   return dateFormatter.format(date).replace(/\./g, "");

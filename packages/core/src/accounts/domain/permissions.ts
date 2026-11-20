@@ -26,3 +26,13 @@ export function canManageMember(actor: Actor, memberRole: OrganizationRole): boo
 export function canManageOrganizationSettings(actor: Actor): boolean {
   return actor.isPlatformAdmin || actor.role === "owner" || actor.role === "admin";
 }
+
+/** The whole team works on bids (staff only read). Mirrors the bids_* policies. */
+export function canWorkOnBids(actor: Actor): boolean {
+  return actor.role !== null;
+}
+
+/** Deleting a bid erases its history: owners and admins only. */
+export function canDeleteBids(actor: Actor): boolean {
+  return actor.role === "owner" || actor.role === "admin";
+}

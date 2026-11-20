@@ -1,19 +1,17 @@
 import { departmentLabel } from "@licitaciones/core/alerts";
-import { formatDateLima, formatPen, formatTenderDescription } from "@licitaciones/core/shared";
+import { formatDateLima, formatMoney, formatTenderDescription } from "@licitaciones/core/shared";
 import { Badge } from "@licitaciones/ui";
+import Link from "next/link";
 import type { Opportunity } from "../types";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 function amountLabel(opportunity: Opportunity): string {
   if (!opportunity.amount) return "Sin valor publicado";
-  if (opportunity.currency && opportunity.currency !== "PEN") {
-    return `${opportunity.currency} ${opportunity.amount.toLocaleString("es-PE")}`;
-  }
-  return formatPen(opportunity.amount);
+  return formatMoney(opportunity.amount, opportunity.currency);
 }
 
-function EnquiryDeadline({ iso, now }: { iso: string | null; now: Date }) {
+export function EnquiryDeadline({ iso, now }: { iso: string | null; now: Date }) {
   if (!iso) return null;
   const deadline = new Date(iso);
   const days = Math.ceil((deadline.getTime() - now.getTime()) / DAY_MS);
@@ -35,11 +33,14 @@ export function OpportunityList({ opportunities }: { opportunities: Opportunity[
       {opportunities.map((opportunity) => (
         <li key={opportunity.ocid} className="flex flex-col gap-2 px-5 py-4">
           <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-1">
-            <p className="line-clamp-3 max-w-2xl leading-snug font-medium text-pretty">
+            <Link
+              href={`/oportunidades/${opportunity.ocid}`}
+              className="line-clamp-3 max-w-2xl leading-snug font-medium text-pretty hover:underline"
+            >
               {opportunity.description
                 ? formatTenderDescription(opportunity.description)
                 : (opportunity.title ?? "Proceso sin descripción")}
-            </p>
+            </Link>
             <p className="shrink-0 font-medium tabular-nums">{amountLabel(opportunity)}</p>
           </div>
           <p className="text-muted text-sm">
