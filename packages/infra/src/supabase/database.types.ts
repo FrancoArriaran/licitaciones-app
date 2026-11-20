@@ -527,6 +527,9 @@ isOneToOne: false
 "create_organization":
 { Args: { "p_ends_at": string,"p_max_seats": number,"p_name": string,"p_plan_code": string,"p_ruc": string,"p_starts_at": string,"p_status": string }; Returns: string
                            },
+"detect_bid_results":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
 "has_active_subscription":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
@@ -554,6 +557,11 @@ isOneToOne: false
                            },
 "refresh_tender_matches":
 { Args: { "days_back"?: number }; Returns: number
+                           },
+"seace_history":
+{ Args: { "p_limit"?: number,"p_organization_id": string }; Returns: {
+              "already_tracked": boolean,"amount": number,"awarded_amount": number,"buyer_name": string,"currency": string,"date_published": string,"description": string,"ocid": string,"outcome": string,"title": string
+            }[]
                            },
 "seat_usage":
 { Args: { "org": string }; Returns: {

@@ -2,6 +2,7 @@ import type { Clock } from "../../shared";
 import { normalizeRecordPackage } from "../domain/ocds";
 import { isSamePeriod, periodsToSync, type Period } from "../domain/period";
 import type {
+  BidResultDetector,
   MatchRefresher,
   ProcurementSource,
   RefreshedMatches,
@@ -14,6 +15,8 @@ export interface SyncSummary {
   runs: SyncRun[];
   /** Null when no month could be loaded, so there was nothing new to match. */
   matches: RefreshedMatches | null;
+  /** New results noted on open bids; null when nothing was loaded. */
+  detectedResults: number | null;
   /** True if any month failed: the caller must report the run as failed. */
   failed: boolean;
 }
@@ -37,6 +40,7 @@ export class SyncTenders {
     private readonly writer: TenderWriter,
     private readonly matches: MatchRefresher,
     private readonly log: SyncRunLog,
+    private readonly results: BidResultDetector,
     private readonly clock: Clock,
   ) {}
 
@@ -54,9 +58,11 @@ export class SyncTenders {
 
     const loaded = runs.some((run) => run.status === "ok");
     const matches = loaded ? await this.matches.refresh() : null;
+    const detectedResults = loaded ? await this.results.detect() : null;
     return {
       runs,
       matches,
+      detectedResults,
       failed: runs.some((run) => run.status === "error") || !loaded,
     };
   }

@@ -18,6 +18,7 @@ export {
   type Period,
 } from "./domain/period";
 export type {
+  BidResultDetector,
   MatchRefresher,
   MonthlyFile,
   ProcurementSource,

@@ -10,6 +10,7 @@ import { listTeamMembers } from "@/features/accounts/data";
 import { addBidNote, updateBid } from "@/features/bids/actions";
 import { BidDetailsForm } from "@/features/bids/components/bid-details-form";
 import { BidDocuments } from "@/features/bids/components/bid-documents";
+import { DetectedResultBanner } from "@/features/bids/components/detected-result-banner";
 import { BidTimeline } from "@/features/bids/components/bid-timeline";
 import { Deadline } from "@/features/bids/components/deadline";
 import { NoteForm } from "@/features/bids/components/note-form";
@@ -89,6 +90,10 @@ export default async function BidPage({
           </Link>
         </div>
       </div>
+
+      {bid.detectedResult && canEdit && (
+        <DetectedResultBanner bid={bid} result={bid.detectedResult} />
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
         <div className="flex flex-col gap-6">

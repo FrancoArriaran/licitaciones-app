@@ -335,6 +335,7 @@ describe("SyncTenders", () => {
         },
       },
       { record: async (run) => void runs.push(run) },
+      { detect: async () => 2 },
       clock,
     );
     return { useCase, writes, runs, refreshed: () => refreshed };
@@ -363,7 +364,11 @@ describe("SyncTenders", () => {
       [11, "ok", 1, 1, 1],
     ]);
     expect(refreshed()).toBe(1);
-    expect(summary).toMatchObject({ failed: false, matches: { alerts: 2, prototype: 1 } });
+    expect(summary).toMatchObject({
+      failed: false,
+      matches: { alerts: 2, prototype: 1 },
+      detectedResults: 2,
+    });
   });
 
   it("loads history without documents", async () => {
@@ -410,6 +415,6 @@ describe("SyncTenders", () => {
     });
     const summary = await useCase.execute();
     expect(refreshed()).toBe(0);
-    expect(summary).toMatchObject({ failed: true, matches: null });
+    expect(summary).toMatchObject({ failed: true, matches: null, detectedResults: null });
   });
 });

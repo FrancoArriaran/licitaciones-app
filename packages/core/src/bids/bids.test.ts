@@ -7,6 +7,7 @@ import {
   bidDetailsSchema,
   DocumentNotUploadedError,
   FollowOpportunity,
+  ImportSeaceHistory,
   RemoveBid,
   storageFileName,
   UpdateBid,
@@ -17,6 +18,7 @@ import {
   type BidTimeline,
   type FileStorage,
   type NewBidEvent,
+  type SeaceParticipation,
 } from "./index";
 
 const ORG = "20000000-0000-0000-0000-0000000000aa" as OrganizationId;
@@ -61,6 +63,25 @@ function setup() {
       if (bid) bids.set(id, { ...bid, ...details });
     },
     remove: async (_org, id) => bids.delete(id),
+    importMany: async (organizationId, _createdBy, rows) => {
+      let created = 0;
+      for (const row of rows) {
+        if ([...bids.values()].some((bid) => bid.ocid === row.ocid)) continue;
+        const id = `bid-${String(++next)}` as BidId;
+        bids.set(id, {
+          id,
+          organizationId,
+          ocid: row.ocid,
+          status: row.status,
+          offeredAmount: null,
+          awardedAmount: row.awardedAmount,
+          lostReason: null,
+          assigneeId: null,
+        });
+        created += 1;
+      }
+      return created;
+    },
   };
   const timeline: BidTimeline = {
     append: async (_org, bidId, actorId, newEvents) => {
@@ -317,5 +338,47 @@ describe("BidDocuments", () => {
       "Carta-de-presentacion-firmada-.PDF",
     );
     expect(storageFileName("¿¿??")).toBe("archivo");
+  });
+});
+
+describe("ImportSeaceHistory", () => {
+  const participation = (overrides: Partial<SeaceParticipation>): SeaceParticipation => ({
+    ocid: "ocds-h-1",
+    title: "SIE-1",
+    description: "CEMENTO",
+    buyerName: "MUNICIPALIDAD",
+    datePublished: "2026-05-01",
+    amount: 1000,
+    currency: "PEN",
+    outcome: "won",
+    awardedAmount: 950,
+    alreadyTracked: false,
+    ...overrides,
+  });
+
+  it("imports wins with their amount, losses and pending ones, skipping tracked processes", async () => {
+    const { repository, bids } = setup();
+    const history = {
+      list: async () => [
+        participation({ ocid: "won" }),
+        participation({ ocid: "lost", outcome: "lost", awardedAmount: null }),
+        participation({ ocid: "pending", outcome: "pending", awardedAmount: null }),
+        participation({ ocid: "tracked", alreadyTracked: true }),
+      ],
+    };
+    const useCase = new ImportSeaceHistory(history, repository);
+
+    expect(await useCase.execute(member, ORG)).toEqual({ imported: 3 });
+    expect([...bids.values()].map((bid) => [bid.ocid, bid.status, bid.awardedAmount])).toEqual([
+      ["won", "won", 950],
+      ["lost", "lost", null],
+      ["pending", "submitted", null],
+    ]);
+  });
+
+  it("is for members of the company", async () => {
+    const { repository } = setup();
+    const useCase = new ImportSeaceHistory({ list: async () => [] }, repository);
+    expect(await errorOf(useCase.preview(staff, ORG))).toBeInstanceOf(NotAuthorizedError);
   });
 });

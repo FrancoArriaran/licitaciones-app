@@ -16,6 +16,7 @@ import {
   AddBidNote,
   BidDocuments,
   FollowOpportunity,
+  ImportSeaceHistory,
   RemoveBid,
   UpdateBid,
 } from "@licitaciones/core/bids";
@@ -28,6 +29,7 @@ import {
   SupabaseBidRepository,
   SupabaseBidTimeline,
   SupabaseFileStorage,
+  SupabaseSeaceHistory,
   SupabaseTeamDirectory,
   SupabaseFamilyCatalog,
   SupabaseLeadPipeline,
@@ -86,6 +88,7 @@ export async function bidsUseCases() {
     updateBid: new UpdateBid(bids, timeline, new SupabaseTeamDirectory(db)),
     addNote: new AddBidNote(bids, timeline),
     removeBid: new RemoveBid(bids),
+    importHistory: new ImportSeaceHistory(new SupabaseSeaceHistory(db), bids),
     documents: new BidDocuments(
       bids,
       new SupabaseBidDocumentRepository(db),

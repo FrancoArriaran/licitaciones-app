@@ -13,5 +13,10 @@ export function printSummary(summary: SyncSummary): void {
       `Coincidencias nuevas: ${summary.matches.alerts} de clientes, ${summary.matches.prototype} del prototipo`,
     );
   }
+  if (summary.detectedResults) {
+    console.log(
+      `Resultados de SEACE anotados en postulaciones: ${String(summary.detectedResults)}`,
+    );
+  }
   if (summary.failed) console.error("La sincronización terminó con errores.");
 }

@@ -1,6 +1,12 @@
 import "server-only";
 import type { OrganizationId } from "@licitaciones/core/accounts";
-import type { BidEventType, BidId, BidStatus, LostReason } from "@licitaciones/core/bids";
+import {
+  isOpenStatus,
+  type BidEventType,
+  type BidId,
+  type BidStatus,
+  type LostReason,
+} from "@licitaciones/core/bids";
 import { unwrap } from "@licitaciones/infra";
 import { getDb } from "@/lib/session";
 
@@ -29,6 +35,16 @@ export interface BidSummary {
   assigneeEmail: string | null;
   updatedAt: string;
   tender: BidTender;
+  /** SEACE published the award and the company hasn't recorded the result yet. */
+  resultDetected: boolean;
+}
+
+/** What SEACE says happened, waiting for the company to confirm. */
+export interface DetectedResult {
+  outcome: "won" | "lost" | "awarded_to_other";
+  winnerName: string | null;
+  amount: number | null;
+  awardDate: string | null;
 }
 
 export interface BidEvent {
@@ -49,6 +65,7 @@ export interface BidDocumentView {
 }
 
 export interface BidDetail extends BidSummary {
+  detectedResult: DetectedResult | null;
   events: BidEvent[];
   documents: BidDocumentView[];
 }
@@ -98,9 +115,10 @@ export async function listBids(organizationId: OrganizationId): Promise<BidSumma
     db
       .from("bids")
       .select(
-        `id, status, offered_amount, awarded_amount, lost_reason, assignee_id, updated_at, tender:tenders(${TENDER_COLUMNS})`,
+        `id, status, offered_amount, awarded_amount, lost_reason, assignee_id, updated_at, tender:tenders(${TENDER_COLUMNS}), detected:bid_events(id)`,
       )
       .eq("organization_id", organizationId)
+      .eq("detected.type", "result_detected")
       .order("updated_at", { ascending: false })
       .limit(500),
     teamEmails(organizationId),
@@ -115,7 +133,19 @@ export async function listBids(organizationId: OrganizationId): Promise<BidSumma
     assigneeEmail: row.assignee_id ? (emails.get(row.assignee_id) ?? null) : null,
     updatedAt: row.updated_at,
     tender: toTender(row.tender),
+    resultDetected: isOpenStatus(row.status as BidStatus) && row.detected.length > 0,
   }));
+}
+
+function toDetectedResult(data: Record<string, unknown>): DetectedResult | null {
+  const outcome = data.outcome;
+  if (outcome !== "won" && outcome !== "lost" && outcome !== "awarded_to_other") return null;
+  return {
+    outcome,
+    winnerName: typeof data.winnerName === "string" ? data.winnerName : null,
+    amount: typeof data.amount === "number" ? data.amount : null,
+    awardDate: typeof data.awardDate === "string" ? data.awardDate : null,
+  };
 }
 
 export async function getBid(
@@ -141,6 +171,18 @@ export async function getBid(
   const row = unwrap("bids.get", result);
   if (!row) return null;
   const email = (userId: string | null) => (userId ? (emails.get(userId) ?? null) : null);
+  const events = [...row.bid_events]
+    .sort((a, b) => b.created_at.localeCompare(a.created_at) || b.id - a.id)
+    .map((event) => ({
+      id: event.id,
+      type: event.type as BidEventType,
+      data: event.data as Record<string, unknown>,
+      actorEmail: email(event.actor_id),
+      createdAt: event.created_at,
+    }));
+  const status = row.status as BidStatus;
+  const detected = events.find((event) => event.type === "result_detected");
+  const detectedResult = detected && isOpenStatus(status) ? toDetectedResult(detected.data) : null;
 
   return {
     id: row.id as BidId,
@@ -152,15 +194,9 @@ export async function getBid(
     assigneeEmail: email(row.assignee_id),
     updatedAt: row.updated_at,
     tender: toTender(row.tender),
-    events: [...row.bid_events]
-      .sort((a, b) => b.created_at.localeCompare(a.created_at) || b.id - a.id)
-      .map((event) => ({
-        id: event.id,
-        type: event.type as BidEventType,
-        data: event.data as Record<string, unknown>,
-        actorEmail: email(event.actor_id),
-        createdAt: event.created_at,
-      })),
+    resultDetected: detectedResult !== null,
+    detectedResult,
+    events,
     documents: [...row.bid_documents]
       .sort((a, b) => b.created_at.localeCompare(a.created_at))
       .map((document) => ({

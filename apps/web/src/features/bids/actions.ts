@@ -103,6 +103,18 @@ export async function addBidNote(
   }
 }
 
+/** Imports every process where the company's RUC bid or won in SEACE. */
+export async function importSeaceHistory(): Promise<Outcome<{ imported: number }>> {
+  try {
+    const { actor, organizationId, useCases } = await context();
+    const { imported } = await useCases.importHistory.execute(actor, organizationId);
+    refresh();
+    return { ok: true, imported };
+  } catch (error) {
+    return failure(error);
+  }
+}
+
 export async function removeBid(bidId: string): Promise<Outcome> {
   try {
     const { actor, organizationId, useCases } = await context();

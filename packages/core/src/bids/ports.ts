@@ -1,5 +1,5 @@
 import type { OrganizationId, UserId } from "../accounts";
-import type { Bid, BidDetails, BidId, BidSource, NewBidEvent } from "./domain/bid";
+import type { Bid, BidDetails, BidId, BidSource, BidStatus, NewBidEvent } from "./domain/bid";
 
 export interface BidRepository {
   findIdByOcid(organizationId: OrganizationId, ocid: string): Promise<BidId | null>;
@@ -14,6 +14,34 @@ export interface BidRepository {
   update(organizationId: OrganizationId, bidId: BidId, details: BidDetails): Promise<void>;
   /** False if there was nothing to delete (not found or not allowed). */
   remove(organizationId: OrganizationId, bidId: BidId): Promise<boolean>;
+  /**
+   * Creates bids from the SEACE history, each with a "created" event (source
+   * seace_import). Skips processes already tracked. Returns how many were created.
+   */
+  importMany(
+    organizationId: OrganizationId,
+    createdBy: UserId,
+    bids: readonly { ocid: string; status: BidStatus; awardedAmount: number | null }[],
+  ): Promise<number>;
+}
+
+/** A process where the company's RUC bid or won, according to SEACE. */
+export interface SeaceParticipation {
+  readonly ocid: string;
+  /** SEACE process code. */
+  readonly title: string | null;
+  readonly description: string | null;
+  readonly buyerName: string | null;
+  readonly datePublished: string | null;
+  readonly amount: number | null;
+  readonly currency: string | null;
+  readonly outcome: "won" | "lost" | "pending";
+  readonly awardedAmount: number | null;
+  readonly alreadyTracked: boolean;
+}
+
+export interface SeaceHistory {
+  list(organizationId: OrganizationId): Promise<SeaceParticipation[]>;
 }
 
 /** Append-only history of a bid. */

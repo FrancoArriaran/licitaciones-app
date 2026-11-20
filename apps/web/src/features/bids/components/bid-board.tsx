@@ -56,7 +56,13 @@ function BidCard({ bid, now }: { bid: BidSummary; now: Date }) {
           </dd>
         </div>
       </dl>
-      {deadline && <Deadline label={deadline.label} iso={deadline.iso} now={now} />}
+      {bid.resultDetected ? (
+        <Link href={`/postulaciones/${bid.id}`} className="self-start">
+          <Badge tone="info">Resultado publicado en SEACE · confirmar</Badge>
+        </Link>
+      ) : (
+        deadline && <Deadline label={deadline.label} iso={deadline.iso} now={now} />
+      )}
       <div className="flex items-center justify-between gap-2">
         <QuickMove bid={bid} />
         {bid.assigneeEmail && <Initials email={bid.assigneeEmail} />}

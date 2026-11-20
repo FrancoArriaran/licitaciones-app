@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Postulaciones" };
 export default async function BidsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ vista?: string; eliminada?: string }>;
+  searchParams: Promise<{ vista?: string; eliminada?: string; importadas?: string }>;
 }) {
   const [{ organization }, params] = await Promise.all([requireMembership(), searchParams]);
   const bids = await listBids(organization.id);
@@ -42,18 +42,41 @@ export default async function BidsPage({
             Las licitaciones que sigues, de la evaluación al resultado.
           </p>
         </div>
+        {bids.length > 0 && (
+          <Link
+            href="/postulaciones/historial"
+            className={buttonVariants({ variant: "secondary", size: "sm" })}
+          >
+            Importar mi historial de SEACE
+          </Link>
+        )}
       </header>
 
       {params.eliminada && <Alert tone="success">Postulación eliminada.</Alert>}
+      {params.importadas && (
+        <Alert tone="success">
+          {params.importadas === "0"
+            ? "Tu historial ya estaba al día."
+            : `Agregamos ${params.importadas} procesos de tu historial en SEACE.`}
+        </Alert>
+      )}
 
       {bids.length === 0 ? (
         <EmptyState
           title="Aún no sigues ninguna licitación"
           description="Cuando una oportunidad te interese, abre su ficha y pulsa «Seguir esta licitación». Aquí registrarás tu oferta, tus documentos y el resultado."
           action={
-            <Link href="/inicio" className={buttonVariants()}>
-              Ver mis oportunidades
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/inicio" className={buttonVariants()}>
+                Ver mis oportunidades
+              </Link>
+              <Link
+                href="/postulaciones/historial"
+                className={buttonVariants({ variant: "secondary" })}
+              >
+                Importar mi historial de SEACE
+              </Link>
+            </div>
           }
         />
       ) : (

@@ -13,11 +13,13 @@ export {
   SupabaseBidDocumentRepository,
   SupabaseBidRepository,
   SupabaseBidTimeline,
+  SupabaseSeaceHistory,
   SupabaseTeamDirectory,
 } from "./bids/supabase-bid-repositories";
 export { SupabaseFileStorage } from "./storage/supabase-file-storage";
 export { SeaceProcurementSource } from "./ingestion/seace-procurement-source";
 export {
+  SupabaseBidResultDetector,
   SupabaseMatchRefresher,
   SupabaseSyncRunLog,
   SupabaseTenderWriter,

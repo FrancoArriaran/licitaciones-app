@@ -71,8 +71,24 @@ function describe(event: BidEvent, team: Map<string, string>): ReactNode {
       ) : (
         "Quitó al responsable"
       );
-    case "result_detected":
-      return "SEACE publicó el resultado";
+    case "result_detected": {
+      const amount = money(data.amount);
+      const winner = typeof data.winnerName === "string" ? data.winnerName : "otro postor";
+      if (data.outcome === "won") {
+        return (
+          <>
+            SEACE publicó la buena pro: <strong>la ganaste</strong>
+            {amount ? ` por ${amount}` : ""}
+          </>
+        );
+      }
+      return (
+        <>
+          SEACE publicó la buena pro: la ganó <strong>{winner}</strong>
+          {amount ? ` por ${amount}` : ""}
+        </>
+      );
+    }
   }
 }
 

@@ -11,6 +11,8 @@ import {
   type BidTimeline,
   type LostReason,
   type NewBidEvent,
+  type SeaceHistory,
+  type SeaceParticipation,
   type TeamDirectory,
 } from "@licitaciones/core/bids";
 import { unwrap, type DbClient } from "../supabase/client";
@@ -109,6 +111,75 @@ export class SupabaseBidRepository implements BidRepository {
         .select("id"),
     );
     return rows.length > 0;
+  }
+
+  async importMany(
+    organizationId: OrganizationId,
+    createdBy: UserId,
+    bids: readonly { ocid: string; status: BidStatus; awardedAmount: number | null }[],
+  ) {
+    let imported = 0;
+    for (let start = 0; start < bids.length; start += 200) {
+      const chunk = bids.slice(start, start + 200);
+      // ignoreDuplicates: a process already on the board keeps its own data.
+      const created = unwrap(
+        "bids.importMany",
+        await this.db
+          .from("bids")
+          .upsert(
+            chunk.map((bid) => ({
+              organization_id: organizationId,
+              ocid: bid.ocid,
+              status: bid.status,
+              awarded_amount: bid.awardedAmount,
+              source: "seace_import",
+              created_by: createdBy,
+            })),
+            { onConflict: "organization_id,ocid", ignoreDuplicates: true },
+          )
+          .select("id"),
+      );
+      if (created.length > 0) {
+        unwrap(
+          "bid_events.importMany",
+          await this.db.from("bid_events").insert(
+            created.map((row) => ({
+              bid_id: row.id,
+              organization_id: organizationId,
+              type: "created",
+              data: { source: "seace_import" },
+              actor_id: createdBy,
+            })),
+          ),
+        );
+      }
+      imported += created.length;
+    }
+    return imported;
+  }
+}
+
+/** The company's own participations in SEACE, by the RUC of its organization. */
+export class SupabaseSeaceHistory implements SeaceHistory {
+  constructor(private readonly db: DbClient) {}
+
+  async list(organizationId: OrganizationId): Promise<SeaceParticipation[]> {
+    const rows = unwrap(
+      "seace_history",
+      await this.db.rpc("seace_history", { p_organization_id: organizationId }),
+    );
+    return rows.map((row) => ({
+      ocid: row.ocid,
+      title: row.title,
+      description: row.description,
+      buyerName: row.buyer_name,
+      datePublished: row.date_published,
+      amount: row.amount,
+      currency: row.currency,
+      outcome: row.outcome === "won" || row.outcome === "lost" ? row.outcome : "pending",
+      awardedAmount: row.awarded_amount,
+      alreadyTracked: row.already_tracked,
+    }));
   }
 }
 

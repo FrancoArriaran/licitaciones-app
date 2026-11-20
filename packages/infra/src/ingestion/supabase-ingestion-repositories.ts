@@ -1,5 +1,6 @@
 import type {
   AwardItemRow,
+  BidResultDetector,
   AwardRow,
   DocumentRow,
   MatchRefresher,
@@ -80,6 +81,14 @@ export class SupabaseMatchRefresher implements MatchRefresher {
     const alerts = unwrap("refreshAlertMatches", await this.db.rpc("refresh_alert_matches"));
     const prototype = unwrap("refreshTenderMatches", await this.db.rpc("refresh_tender_matches"));
     return { alerts, prototype };
+  }
+}
+
+export class SupabaseBidResultDetector implements BidResultDetector {
+  constructor(private readonly db: DbClient) {}
+
+  async detect() {
+    return unwrap("detectBidResults", await this.db.rpc("detect_bid_results"));
   }
 }
 

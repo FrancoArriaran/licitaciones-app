@@ -37,6 +37,12 @@ export interface MatchRefresher {
   refresh(): Promise<RefreshedMatches>;
 }
 
+/** Notes on open bids when SEACE publishes their award; the company confirms them. */
+export interface BidResultDetector {
+  /** How many new results were noted. Idempotent. */
+  detect(): Promise<number>;
+}
+
 export type SyncRunStatus = "ok" | "not_published" | "error";
 
 export interface SyncRun {

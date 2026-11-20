@@ -1,4 +1,5 @@
 export { BidDocuments } from "./application/bid-documents";
+export { ImportSeaceHistory } from "./application/import-history";
 export { AddBidNote, FollowOpportunity, RemoveBid, UpdateBid } from "./application/manage-bids";
 export {
   BID_SOURCES,
@@ -34,5 +35,7 @@ export type {
   BidTimeline,
   FileStorage,
   IdGenerator,
+  SeaceHistory,
+  SeaceParticipation,
   TeamDirectory,
 } from "./ports";

@@ -6,6 +6,8 @@ import Link from "next/link";
 import { SubscriptionBadge } from "@/features/accounts/components/subscription-badge";
 import { getPlanName, getSeatUsage } from "@/features/accounts/data";
 import { OpportunityList } from "@/features/alerts/components/opportunity-list";
+import { BidsOverview } from "@/features/bids/components/bids-overview";
+import { listBids } from "@/features/bids/data";
 import { listAlertProfiles, listRecentMatches } from "@/features/alerts/data";
 import { getActor, requireMembership } from "@/lib/session";
 
@@ -13,12 +15,13 @@ export const metadata: Metadata = { title: "Inicio" };
 
 export default async function HomePage() {
   const { organization, subscription } = await requireMembership();
-  const [actor, planName, seats, profiles, matches] = await Promise.all([
+  const [actor, planName, seats, profiles, matches, bids] = await Promise.all([
     getActor(organization.id),
     getPlanName(subscription.planCode),
     getSeatUsage(organization.id),
     listAlertProfiles(organization.id),
     listRecentMatches(organization.id),
+    listBids(organization.id),
   ]);
   const canManage = canManageOrganizationSettings(actor);
   const firstProfile = profiles[0];
@@ -31,6 +34,8 @@ export default async function HomePage() {
           Inicio
         </h1>
       </header>
+
+      <BidsOverview bids={bids} now={new Date()} />
 
       {!firstProfile ? (
         <EmptyState

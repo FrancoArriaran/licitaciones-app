@@ -4,6 +4,7 @@ import {
   createServiceRoleClient,
   MetaWhatsAppSender,
   SeaceProcurementSource,
+  SupabaseBidResultDetector,
   SupabaseMatchRefresher,
   SupabasePendingWhatsAppAlerts,
   SupabaseSyncRunLog,
@@ -25,6 +26,7 @@ export function syncTenders() {
     new SupabaseTenderWriter(db),
     new SupabaseMatchRefresher(db),
     new SupabaseSyncRunLog(db),
+    new SupabaseBidResultDetector(db),
     systemClock,
   );
 }
